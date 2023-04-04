@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:id="@+id/layout_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_user"
+        style="@style/ImageView_Circle_Style"
+        app:civ_border_color="@color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_user_info"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/iv_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_user"
+        app:layout_constraintBottom_toBottomOf="@id/iv_user" >
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            style="@style/TextView_User_Profile_Style"
+            tools:text="홍길동"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/iv_user_page"
+            style="@style/ImageView_User_Profile_Info_Style"
+            android:src="@drawable/icon_user_page"
+            app:layout_constraintStart_toStartOf="@id/tv_user_name"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_user_page"
+            style="@style/TextView_User_Profile_Style"
+            android:layout_width="0dp"
+            android:layout_marginStart="5dp"
+            tools:text="www.xxxx.com"
+            app:layout_constraintStart_toEndOf="@id/iv_user_page"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_user_page"
+            app:layout_constraintBottom_toBottomOf="@id/iv_user_page"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
