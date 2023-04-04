@@ -1,15 +1,3 @@
 <resources>
     <string name="app_name">TestCodeExample</string>
-
-    <string name="title_home">Home</string>
-    <string name="title_user_list">List</string>
-
-    <string name="label_user_list">유저 리스트</string>
-    <string name="label_search">검색</string>
-
-    <string name="hint_user_search_guide">미입력 시 전체검색</string>
-
-    <string name="msg_error_exception">서버와 통신하는 동안 오류가 발생했습니다.</string>
-    <string name="msg_error_http_exception">서버와 통신하는 동안 오류가 발생했습니다.\n나중에 다시 시도해주세요.</string>
-    <string name="msg_error_io_exception">서버에 연결할 수 없습니다.\n인터넷 연결을 확인하고 나중에 다시 시도하십시오.</string>
 </resources>

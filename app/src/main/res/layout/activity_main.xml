@@ -4,25 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_common_app_theme_dark"
-    android:padding="20dp"
-    tools:context=".ui.main.MainActivity">
+    tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/tv_title"
-        style="@style/TextView_Activity_Title_Style"
-        android:text="@string/title_home"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_user_list"
-        style="@style/Button_Common_Style"
-        android:layout_marginTop="20dp"
-        android:text="@string/label_user_list"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
