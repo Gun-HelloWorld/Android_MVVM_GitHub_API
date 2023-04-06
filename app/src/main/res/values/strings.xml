@@ -1,4 +1,6 @@
 <resources>
+    <string name="transition_user_profile_img">UserProfileImage</string>
+
     <string name="app_name">TestCodeExample</string>
 
     <string name="title_home">Home</string>
@@ -6,6 +8,9 @@
 
     <string name="label_user_list">유저 리스트</string>
     <string name="label_search">검색</string>
+    <string name="label_repositories">Repositories</string>
+    <string name="label_followers">Followers</string>
+    <string name="label_following">Following</string>
 
     <string name="hint_user_search_guide">미입력 시 전체검색</string>
 

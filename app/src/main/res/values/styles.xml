@@ -80,4 +80,26 @@
         <item name="android:layout_height">80dp</item>
         <item name="android:src">@drawable/icon_profile_blank</item>
     </style>
+
+    <!-- TextView User contents count value -->
+    <style name="TextView_User_Contents_Count_Value_Style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- TextView User contents count label -->
+    <style name="TextView_User_Contents_Count_Label_Style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- View Divider-->
+    <style name="View_Divider_Style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/color_common_divider_grey</item>
+    </style>
 </resources>

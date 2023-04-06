@@ -14,4 +14,5 @@
     <color name="color_common_edit_hint_grey">#BDBDBD</color>
     <color name="color_common_btn_mint">#2BA5BA</color>
     <color name="color_common_error_text_red">#FF5A5A</color>
+    <color name="color_common_divider_grey">#5D5D5D</color>
 </resources>
