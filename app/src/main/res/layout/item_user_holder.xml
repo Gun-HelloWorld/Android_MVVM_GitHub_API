@@ -11,6 +11,7 @@
         android:id="@+id/iv_user"
         style="@style/ImageView_Circle_Style"
         app:civ_border_color="@color/transparent"
+        android:transitionName="@string/transition_user_profile_img"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -26,17 +27,19 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_user" >
 
         <TextView
-            android:id="@+id/tv_user_name"
+            android:id="@+id/tv_user_nickname"
             style="@style/TextView_User_Profile_Style"
+            android:layout_width="0dp"
             tools:text="홍길동"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
             android:id="@+id/iv_user_page"
             style="@style/ImageView_User_Profile_Info_Style"
             android:src="@drawable/icon_user_page"
-            app:layout_constraintStart_toStartOf="@id/tv_user_name"
+            app:layout_constraintStart_toStartOf="@id/tv_user_nickname"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView

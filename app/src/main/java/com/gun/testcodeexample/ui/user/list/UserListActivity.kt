@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +19,8 @@ import com.gun.testcodeexample.common.ErrorMessageParser
 import com.gun.testcodeexample.common.recyclerview.CommonItemDecoration
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
 import com.gun.testcodeexample.data.user.User
+import com.gun.testcodeexample.ui.user.detail.UserDetailActivity
+import com.gun.testcodeexample.ui.user.list.UserListViewModel.Mode
 import com.gun.testcodeexample.ui.user.list.UserListViewModel.ViewState.*
 
 class UserListActivity : AppCompatActivity(), OnClickListener,
@@ -74,6 +75,11 @@ class UserListActivity : AppCompatActivity(), OnClickListener,
                 }
 
                 is UserLoadSuccess -> {
+                    if (it.mode == Mode.MOVE_DETAIL) {
+                        startDetailActivity(it.user)
+                        return@observe
+                    }
+
                     recyclerAdapter.submitList(listOf(it.user))
                 }
             }
@@ -85,9 +91,18 @@ class UserListActivity : AppCompatActivity(), OnClickListener,
         loadingBar.visibility = visibility
     }
 
+    private fun startDetailActivity(user: User) {
+        val pairList = recyclerAdapter.sharedElementsMap[user.login]
+        UserDetailActivity.startActivity(this, user, pairList)
+    }
+
     override fun onItemClick(data: User) {
-        // TODO Move to UserDetailActivity
-        Toast.makeText(this, "기능 구현 예정", Toast.LENGTH_SHORT).show()
+        if (data.existUserDetail()) {
+            startDetailActivity(data)
+            return
+        }
+
+        userListViewModel.fetchUser(data.login, Mode.MOVE_DETAIL)
     }
 
     override fun onClick(v: View?) {
@@ -99,7 +114,7 @@ class UserListActivity : AppCompatActivity(), OnClickListener,
                 if (inputText.isEmpty()) {
                     userListViewModel.fetchUserList()
                 } else {
-                    userListViewModel.fetchUser(inputText)
+                    userListViewModel.fetchUser(inputText, Mode.SEARCH)
                 }
             }
         }

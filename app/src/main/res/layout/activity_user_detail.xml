@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:id="@+id/layout_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.user.detail.UserDetailActivity">
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/loading_bar"
+        style="@style/LoadingBar_Style"
+        tools:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_user"
+        style="@style/ImageView_Circle_Style"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="20dp"
+        app:civ_border_color="@color/transparent"
+        android:transitionName="@string/transition_user_profile_img"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_user_nickname"
+        style="@style/TextView_User_Profile_Style"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="20dp"
+        tools:text="사용자 닉네임"
+        app:layout_constraintStart_toStartOf="@id/iv_user"
+        app:layout_constraintEnd_toEndOf="@id/iv_user"
+        app:layout_constraintTop_toBottomOf="@id/iv_user"/>
+
+    <!-- Repository, Followers, Following -->
+    <include layout="@layout/layer_user_detail_count"/>
+
+    <View
+        android:id="@+id/view_divider"
+        style="@style/View_Divider_Style"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_label_repository_cnt"
+        tools:ignore="NotSibling" />
+</androidx.constraintlayout.widget.ConstraintLayout>
