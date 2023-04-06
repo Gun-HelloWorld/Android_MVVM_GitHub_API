@@ -8,14 +8,13 @@ import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.ContentLoadingProgressBar
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.gun.testcodeexample.R
 import com.gun.testcodeexample.api.retrofit.SizeUtils.dpToPx
 import com.gun.testcodeexample.common.ErrorMessageParser
+import com.gun.testcodeexample.common.BaseActivity
 import com.gun.testcodeexample.common.recyclerview.CommonItemDecoration
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
 import com.gun.testcodeexample.data.user.User
@@ -23,13 +22,12 @@ import com.gun.testcodeexample.ui.user.detail.UserDetailActivity
 import com.gun.testcodeexample.ui.user.list.UserListViewModel.Mode
 import com.gun.testcodeexample.ui.user.list.UserListViewModel.ViewState.*
 
-class UserListActivity : AppCompatActivity(), OnClickListener,
+class UserListActivity : BaseActivity(), OnClickListener,
     ItemClickListener<User> {
 
     private val userListViewModel by viewModels<UserListViewModel> { UserListViewModel.Factory }
 
     private val rootLayout: ConstraintLayout by lazy { findViewById(R.id.root_layout) }
-    private val loadingBar: ContentLoadingProgressBar by lazy { findViewById(R.id.loading_bar) }
     private val etSearch: EditText by lazy { findViewById(R.id.et_search) }
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.recycler_view) }
 
@@ -49,6 +47,8 @@ class UserListActivity : AppCompatActivity(), OnClickListener,
 
     private fun initLayout() {
         setContentView(R.layout.activity_user_list)
+
+        initLoadingBar(findViewById(R.id.loading_bar))
 
         recyclerView.adapter = recyclerAdapter
 
@@ -84,11 +84,6 @@ class UserListActivity : AppCompatActivity(), OnClickListener,
                 }
             }
         }
-    }
-
-    private fun showLoadingBar(isShow: Boolean) {
-        val visibility = if (isShow) View.VISIBLE else View.GONE
-        loadingBar.visibility = visibility
     }
 
     private fun startDetailActivity(user: User) {
