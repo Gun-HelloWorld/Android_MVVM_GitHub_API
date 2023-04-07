@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        style="@style/CardView_Default_Style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_user_info"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/iv_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_user"
+                app:layout_constraintTop_toTopOf="@id/iv_user">
+
+                <ImageView
+                    android:id="@+id/iv_user_page"
+                    style="@style/ImageView_User_Profile_Info_Style"
+                    android:src="@drawable/icon_user_page"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tv_user_nickname" />
+
+                <TextView
+                    android:id="@+id/tv_user_nickname"
+                    style="@style/TextView_User_Profile_Style"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="홍길동" />
+
+                <TextView
+                    android:id="@+id/tv_user_page"
+                    style="@style/TextView_User_Profile_Style"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_user_page"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_user_page"
+                    app:layout_constraintTop_toTopOf="@id/iv_user_page"
+                    tools:text="www.xxxx.com" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_user"
+                style="@style/ImageView_Circle_Style"
+                android:transitionName="@string/transition_user_profile_img"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

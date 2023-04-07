@@ -3,17 +3,15 @@ package com.gun.testcodeexample.ui.user.list
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
-import android.widget.Button
 import android.widget.EditText
 import androidx.activity.viewModels
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.gun.testcodeexample.R
-import com.gun.testcodeexample.api.retrofit.SizeUtils.dpToPx
-import com.gun.testcodeexample.common.ErrorMessageParser
 import com.gun.testcodeexample.common.BaseActivity
-import com.gun.testcodeexample.common.recyclerview.CommonItemDecoration
+import com.gun.testcodeexample.common.ErrorMessageParser
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
 import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.ui.user.detail.UserDetailActivity
@@ -21,7 +19,7 @@ import com.gun.testcodeexample.viewmodel.UserViewModel
 import com.gun.testcodeexample.viewmodel.UserViewModel.Mode
 import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.*
 
-class UserListActivity : BaseActivity(), OnClickListener,
+class UserSearchActivity : BaseActivity(), OnClickListener,
     ItemClickListener<User> {
 
     private val userViewModel by viewModels<UserViewModel> { UserViewModel.Factory }
@@ -30,7 +28,7 @@ class UserListActivity : BaseActivity(), OnClickListener,
     private val etSearch: EditText by lazy { findViewById(R.id.et_search) }
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.recycler_view) }
 
-    private val recyclerAdapter = UserListRecyclerAdapter(this)
+    private val recyclerAdapter = UserSearchRecyclerAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,15 +37,15 @@ class UserListActivity : BaseActivity(), OnClickListener,
     }
 
     private fun initLayout() {
-        setContentView(R.layout.activity_user_list)
+        setContentView(R.layout.activity_user_search)
 
         initLoadingBar(findViewById(R.id.loading_bar))
 
         recyclerView.adapter = recyclerAdapter
 
-        val spaceSize = dpToPx(this, 5).toInt()
-        recyclerView.addItemDecoration(CommonItemDecoration(top = spaceSize, bottom = spaceSize))
-        findViewById<Button>(R.id.btn_search).setOnClickListener(this)
+//        val spaceSize = dpToPx(this, 5).toInt()
+//        recyclerView.addItemDecoration(CommonItemDecoration(top = spaceSize, bottom = spaceSize))
+        findViewById<CardView>(R.id.card_view_search).setOnClickListener(this)
     }
 
     private fun initObserver() {
@@ -95,7 +93,7 @@ class UserListActivity : BaseActivity(), OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btn_search -> {
+            R.id.card_view_search -> {
                 val inputText = etSearch.text.toString()
                     .replace(" ", "")
 

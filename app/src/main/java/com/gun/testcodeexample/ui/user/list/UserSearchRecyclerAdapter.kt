@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.cardview.widget.CardView
 import androidx.core.util.Pair
 import com.bumptech.glide.Glide
 import com.gun.testcodeexample.R
@@ -14,14 +15,14 @@ import com.gun.testcodeexample.common.recyclerview.BaseViewHolder
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
 import com.gun.testcodeexample.data.dto.user.User
 
-class UserListRecyclerAdapter(val listener: ItemClickListener<User>) :
-    BaseListAdapter<User, UserListRecyclerAdapter.UserViewHolder>() {
+class UserSearchRecyclerAdapter(val listener: ItemClickListener<User>) :
+    BaseListAdapter<User, UserSearchRecyclerAdapter.UserViewHolder>() {
 
     var sharedElementsMap: MutableMap<String, Pair<View, String>> = mutableMapOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.holder_user, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.holder_user_search, parent, false)
         return UserViewHolder(view)
     }
 
@@ -32,7 +33,7 @@ class UserListRecyclerAdapter(val listener: ItemClickListener<User>) :
     }
 
     inner class UserViewHolder(private val view: View) : BaseViewHolder(view) {
-        private val rootLayout: View by lazy { view.findViewById(R.id.layout_root) }
+        private val cardView: CardView by lazy { view.findViewById(R.id.card_view) }
         private val tvUserNickname: TextView by lazy { view.findViewById(R.id.tv_user_nickname) }
         private val tvUserPage: TextView by lazy { view.findViewById(R.id.tv_user_page) }
         private val ivUser: ImageView by lazy { view.findViewById(R.id.iv_user) }
@@ -50,7 +51,7 @@ class UserListRecyclerAdapter(val listener: ItemClickListener<User>) :
         }
 
         fun setClickListener(user: User) {
-            rootLayout.setOnClickListener {
+            cardView.setOnClickListener {
                 val imageTransitionPair = Pair(ivUser as View, ivUser.transitionName)
                 sharedElementsMap[user.login] = imageTransitionPair
 

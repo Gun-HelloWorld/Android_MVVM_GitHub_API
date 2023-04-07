@@ -3,10 +3,8 @@
 
     <string name="app_name">TestCodeExample</string>
 
-    <string name="title_home">Home</string>
-    <string name="title_user_list">List</string>
+    <string name="title_user_search">Search</string>
 
-    <string name="label_user_list">유저 리스트</string>
     <string name="label_search">검색</string>
     <string name="label_repositories">Repositories</string>
     <string name="label_followers">Followers</string>

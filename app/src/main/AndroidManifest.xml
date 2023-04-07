@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name=".ui.user.list.UserListActivity"
+            android:name=".ui.user.list.UserSearchActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
