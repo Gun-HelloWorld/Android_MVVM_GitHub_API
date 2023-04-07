@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.gun.testcodeexample.R
@@ -83,6 +84,13 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
     }
 
     override fun onItemClick(data: User) {
+        val isLastLifecycleResume = this.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
+
+        // 중복잡업 막기 (화면 전환 시 애니메이션으로 인해 추가적으로 수명주기 체크 로직 포함)
+        if (userViewModel.viewState.value == Loading(true) || !isLastLifecycleResume) {
+            return
+        }
+
         if (data.existUserDetail()) {
             startDetailActivity(data)
             return
@@ -94,6 +102,10 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.card_view_search -> {
+                if (userViewModel.viewState.value == Loading(true)) {
+                    return
+                }
+
                 val inputText = etSearch.text.toString()
                     .replace(" ", "")
 
