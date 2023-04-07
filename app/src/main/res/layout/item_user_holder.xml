@@ -10,7 +10,6 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_user"
         style="@style/ImageView_Circle_Style"
-        app:civ_border_color="@color/transparent"
         android:transitionName="@string/transition_user_profile_img"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

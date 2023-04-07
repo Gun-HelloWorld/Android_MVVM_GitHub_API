@@ -1,6 +1,7 @@
 package com.gun.testcodeexample.api.retrofit
 
 import com.gun.testcodeexample.api.okhttp.OkHttpProvider
+import com.gun.testcodeexample.data.service.RepositoryService
 import com.gun.testcodeexample.data.service.UserService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,6 +19,10 @@ object RetrofitProvider {
 
     fun getUserService(): UserService {
         return client.create(UserService::class.java)
+    }
+
+    fun getRepositoryService(): RepositoryService {
+        return client.create(RepositoryService::class.java)
     }
 }
 

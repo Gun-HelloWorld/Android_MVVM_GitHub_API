@@ -1,7 +1,7 @@
 package com.gun.testcodeexample.data.source
 
 import com.gun.testcodeexample.data.service.UserService
-import com.gun.testcodeexample.data.user.User
+import com.gun.testcodeexample.data.dto.user.User
 
 class UserRemoteDataSourceImpl(private val userService: UserService) : UserRemoteDataSource {
     override suspend fun getUserList(): MutableList<User> {

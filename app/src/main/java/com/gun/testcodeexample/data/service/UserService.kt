@@ -1,6 +1,6 @@
 package com.gun.testcodeexample.data.service
 
-import com.gun.testcodeexample.data.user.User
+import com.gun.testcodeexample.data.dto.user.User
 import retrofit2.http.GET
 import retrofit2.http.Path
 

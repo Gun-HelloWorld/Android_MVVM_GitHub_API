@@ -12,6 +12,10 @@
     <string name="label_followers">Followers</string>
     <string name="label_following">Following</string>
 
+    <string name="value_with_starts">%d stars</string>
+    <string name="value_with_watching">%d watching</string>
+    <string name="value_with_forks">%d forks</string>
+
     <string name="hint_user_search_guide">미입력 시 전체검색</string>
 
     <string name="msg_error_exception">서버와 통신하는 동안 오류가 발생했습니다.</string>
