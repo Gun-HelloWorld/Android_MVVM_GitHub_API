@@ -18,5 +18,6 @@
 
     <string name="msg_error_exception">서버와 통신하는 동안 오류가 발생했습니다.</string>
     <string name="msg_error_http_exception">서버와 통신하는 동안 오류가 발생했습니다.\n나중에 다시 시도해주세요.</string>
+    <string name="msg_error_http_exception_403">인증에 실패하였습니다.\nAPI 호출 제한횟수를 확인 해주세요.</string>
     <string name="msg_error_io_exception">서버에 연결할 수 없습니다.\n인터넷 연결을 확인하고 나중에 다시 시도하십시오.</string>
 </resources>

@@ -19,8 +19,8 @@ abstract class BaseViewModel : ViewModel() {
 
         when (throwable) {
             is HttpException -> _errorState.postValue(ErrorState.HttpExceptionState(throwable))
-            is IOException -> _errorState.postValue(ErrorState.IOExceptionState)
-            else -> _errorState.postValue(ErrorState.ExceptionState)
+            is IOException -> _errorState.postValue(ErrorState.IOExceptionState(throwable))
+            else -> _errorState.postValue(ErrorState.ExceptionState(throwable))
         }
     }
 }
