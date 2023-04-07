@@ -62,7 +62,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_marginTop="20dp"
         android:paddingBottom="20dp"
-        tools:listitem="@layout/item_user_holder"
+        tools:listitem="@layout/holder_user"
         tools:itemCount="6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

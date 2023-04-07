@@ -8,7 +8,7 @@ class RepoRepositoryImpl(
 ) : RepoRepository {
 
     override suspend fun fetchRepositoryList(userName: String): MutableList<Repository> {
-        return repositoryRemoteDataSource.getRepositoryList(userName)
+        return repositoryRemoteDataSource.fetchRepositoryList(userName)
     }
 
 }

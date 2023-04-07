@@ -6,5 +6,5 @@ import retrofit2.http.Path
 
 interface RepositoryService {
     @GET("users/{userName}/repos")
-    suspend fun getUserRepository(@Path("userName") userName: String): MutableList<Repository>
+    suspend fun fetchRepositoryList(@Path("userName") userName: String): MutableList<Repository>
 }

@@ -16,7 +16,7 @@ class RepositoryRecyclerAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
         val view =
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_repository_holder, parent, false)
+                .inflate(R.layout.holder_repository, parent, false)
         return RepositoryViewHolder(view)
     }
 

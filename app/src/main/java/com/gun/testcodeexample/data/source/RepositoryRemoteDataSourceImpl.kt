@@ -7,10 +7,10 @@ class RepositoryRemoteDataSourceImpl(
     private val repositoryService: RepositoryService
 ) : RepositoryRemoteDataSource {
 
-    override suspend fun getRepositoryList(userName: String): MutableList<Repository> {
+    override suspend fun fetchRepositoryList(userName: String): MutableList<Repository> {
 //        val mockResponse: Response<Account> = Response.error(500, "".toResponseBody("application/json".toMediaTypeOrNull()))
 //        throw HttpException(mockResponse)
-        return repositoryService.getUserRepository(userName)
+        return repositoryService.fetchRepositoryList(userName)
     }
 
 }

@@ -62,7 +62,7 @@
         style="@style/RecyclerView_Style"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:paddingBottom="20dp"
-        tools:listitem="@layout/item_repository_holder"
+        tools:listitem="@layout/holder_repository"
         tools:itemCount="6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -21,7 +21,7 @@ class UserListRecyclerAdapter(val listener: ItemClickListener<User>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_user_holder, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.holder_user, parent, false)
         return UserViewHolder(view)
     }
 

@@ -6,8 +6,8 @@ import retrofit2.http.Path
 
 interface UserService {
     @GET("users")
-    suspend fun getUserList(): MutableList<User>
+    suspend fun fetchUserList(): MutableList<User>
 
     @GET("users/{userName}")
-    suspend fun getUser(@Path("userName") userName: String): User
+    suspend fun fetchUser(@Path("userName") userName: String): User
 }

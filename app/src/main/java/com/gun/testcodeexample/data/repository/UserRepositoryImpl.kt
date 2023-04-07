@@ -5,10 +5,10 @@ import com.gun.testcodeexample.data.dto.user.User
 
 class UserRepositoryImpl(private val userRemoteDataSource: UserRemoteDataSource) : UserRepository {
     override suspend fun fetchUserList(): MutableList<User> {
-        return userRemoteDataSource.getUserList()
+        return userRemoteDataSource.fetchUserList()
     }
 
     override suspend fun fetchUser(userName: String): User {
-        return userRemoteDataSource.getUser(userName)
+        return userRemoteDataSource.fetchUser(userName)
     }
 }
