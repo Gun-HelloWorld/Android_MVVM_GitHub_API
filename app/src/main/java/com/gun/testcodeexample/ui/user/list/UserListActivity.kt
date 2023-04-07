@@ -34,12 +34,6 @@ class UserListActivity : BaseActivity(), OnClickListener,
 
     private val recyclerAdapter = UserListRecyclerAdapter(this)
 
-    companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, UserListActivity::class.java))
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initLayout()
