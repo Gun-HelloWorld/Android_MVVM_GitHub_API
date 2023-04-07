@@ -17,15 +17,16 @@ import com.gun.testcodeexample.common.ErrorMessageParser
 import com.gun.testcodeexample.common.BaseActivity
 import com.gun.testcodeexample.common.recyclerview.CommonItemDecoration
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
-import com.gun.testcodeexample.data.user.User
+import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.ui.user.detail.UserDetailActivity
-import com.gun.testcodeexample.ui.user.list.UserListViewModel.Mode
-import com.gun.testcodeexample.ui.user.list.UserListViewModel.ViewState.*
+import com.gun.testcodeexample.viewmodel.UserViewModel
+import com.gun.testcodeexample.viewmodel.UserViewModel.Mode
+import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.*
 
 class UserListActivity : BaseActivity(), OnClickListener,
     ItemClickListener<User> {
 
-    private val userListViewModel by viewModels<UserListViewModel> { UserListViewModel.Factory }
+    private val userViewModel by viewModels<UserViewModel> { UserViewModel.Factory }
 
     private val rootLayout: ConstraintLayout by lazy { findViewById(R.id.root_layout) }
     private val etSearch: EditText by lazy { findViewById(R.id.et_search) }
@@ -58,13 +59,13 @@ class UserListActivity : BaseActivity(), OnClickListener,
     }
 
     private fun initObserver() {
-        userListViewModel.errorState.observe(this) {
+        userViewModel.errorState.observe(this) {
             showLoadingBar(false)
             val message = ErrorMessageParser.parseToErrorMessage(resources, it)
             Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT).show()
         }
 
-        userListViewModel.viewState.observe(this) {
+        userViewModel.viewState.observe(this) {
             when (it) {
                 is Loading -> {
                     showLoadingBar(it.isShow)
@@ -97,7 +98,7 @@ class UserListActivity : BaseActivity(), OnClickListener,
             return
         }
 
-        userListViewModel.fetchUser(data.login, Mode.MOVE_DETAIL)
+        userViewModel.fetchUser(data.login, Mode.MOVE_DETAIL)
     }
 
     override fun onClick(v: View?) {
@@ -107,9 +108,9 @@ class UserListActivity : BaseActivity(), OnClickListener,
                     .replace(" ", "")
 
                 if (inputText.isEmpty()) {
-                    userListViewModel.fetchUserList()
+                    userViewModel.fetchUserList()
                 } else {
-                    userListViewModel.fetchUser(inputText, Mode.SEARCH)
+                    userViewModel.fetchUser(inputText, Mode.SEARCH)
                 }
             }
         }

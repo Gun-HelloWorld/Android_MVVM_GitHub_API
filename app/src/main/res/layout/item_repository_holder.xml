@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        style="@style/CardView_Default_Style"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_repo_name"
+                style="@style/TextView_Repository_Holder_Title_Style"
+                app:layout_constraintEnd_toStartOf="@id/iv_license"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Repository Name" />
+
+            <ImageView
+                android:id="@+id/iv_license"
+                style="@style/ImageView_Repository_Holder_Icon_Style"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/icon_license_24"
+                app:layout_constraintStart_toEndOf="@id/tv_repo_name"
+                app:layout_constraintEnd_toStartOf="@id/tv_license"
+                app:layout_constraintBottom_toBottomOf="@id/tv_license"/>
+
+            <TextView
+                android:id="@+id/tv_license"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                tools:text="Apache License 2.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/tv_repo_name"/>
+
+            <ImageView
+                android:id="@+id/iv_star"
+                style="@style/ImageView_Repository_Holder_Icon_Style"
+                android:src="@drawable/icon_star_24"
+                android:layout_marginTop="10dp"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_star_cnt"
+                app:layout_constraintTop_toBottomOf="@id/tv_repo_name" />
+
+            <TextView
+                android:id="@+id/tv_star_cnt"
+                style="@style/TextView_Repository_Holder_Count_Style"
+                android:text="@string/value_with_starts"
+                app:layout_constraintStart_toEndOf="@id/iv_star"
+                app:layout_constraintEnd_toStartOf="@id/iv_watch"
+                app:layout_constraintTop_toTopOf="@id/iv_star"
+                app:layout_constraintBottom_toBottomOf="@id/iv_star"/>
+
+            <ImageView
+                android:id="@+id/iv_watch"
+                style="@style/ImageView_Repository_Holder_Icon_Style"
+                android:src="@drawable/icon_watch_24"
+                app:layout_constraintStart_toEndOf="@id/tv_star_cnt"
+                app:layout_constraintEnd_toStartOf="@id/tv_watch_cnt"
+                app:layout_constraintTop_toTopOf="@id/iv_star"
+                app:layout_constraintBottom_toBottomOf="@id/iv_star"/>
+
+            <TextView
+                android:id="@+id/tv_watch_cnt"
+                style="@style/TextView_Repository_Holder_Count_Style"
+                android:text="@string/value_with_watching"
+                app:layout_constraintStart_toEndOf="@id/iv_watch"
+                app:layout_constraintEnd_toStartOf="@id/iv_fork"
+                app:layout_constraintTop_toTopOf="@id/iv_watch"
+                app:layout_constraintBottom_toBottomOf="@id/iv_watch"/>
+
+            <ImageView
+                android:id="@+id/iv_fork"
+                style="@style/ImageView_Repository_Holder_Icon_Style"
+                android:src="@drawable/icon_fork_24"
+                app:layout_constraintStart_toEndOf="@id/tv_watch_cnt"
+                app:layout_constraintEnd_toStartOf="@id/tv_fork_cnt"
+                app:layout_constraintTop_toTopOf="@id/iv_star"
+                app:layout_constraintBottom_toBottomOf="@id/iv_star"/>
+
+            <TextView
+                android:id="@+id/tv_fork_cnt"
+                style="@style/TextView_Repository_Holder_Count_Style"
+                android:layout_marginEnd="0dp"
+                android:text="@string/value_with_forks"
+                app:layout_constraintStart_toEndOf="@id/iv_fork"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_fork"
+                app:layout_constraintBottom_toBottomOf="@id/iv_fork" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                style="@style/TextView_Repository_Holder_Description_Style"
+                android:layout_marginTop="15dp"
+                tools:text="Description...\n................................."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_repo_name"
+                app:layout_constraintTop_toBottomOf="@id/iv_star" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_license"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="iv_license, tv_license"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

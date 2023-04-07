@@ -12,7 +12,7 @@ import com.gun.testcodeexample.R
 import com.gun.testcodeexample.common.recyclerview.BaseListAdapter
 import com.gun.testcodeexample.common.recyclerview.BaseViewHolder
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
-import com.gun.testcodeexample.data.user.User
+import com.gun.testcodeexample.data.dto.user.User
 
 class UserListRecyclerAdapter(val listener: ItemClickListener<User>) :
     BaseListAdapter<User, UserListRecyclerAdapter.UserViewHolder>() {
