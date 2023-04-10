@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.gun.testcodeexample.R
@@ -20,6 +21,7 @@ import com.gun.testcodeexample.common.ErrorMessageParser
 import com.gun.testcodeexample.common.ext.loadUserProfile
 import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.viewmodel.RepositoryViewModel
+import kotlinx.coroutines.launch
 
 class UserDetailActivity : BaseActivity() {
 
@@ -68,18 +70,22 @@ class UserDetailActivity : BaseActivity() {
     }
 
     private fun initObserver() {
-        repositoryViewModel.errorState.observe(this) {
-            showLoadingBar(false)
-            val message = ErrorMessageParser.parseToErrorMessage(resources, it)
-            Snackbar.make(layoutRoot, message, Snackbar.LENGTH_SHORT).show()
-        }
+        lifecycleScope.launchWhenStarted {
 
-        repositoryViewModel.viewState.observe(this) {
-            when (it) {
-                is RepositoryViewModel.ViewState.Loading -> {
+            launch {
+                repositoryViewModel.loadingState.collect {
                     showLoadingBar(it.isShow)
                 }
-                is RepositoryViewModel.ViewState.RepositoryListLoadSuccess -> {
+            }
+            launch {
+                repositoryViewModel.errorState.collect {
+                    val message = ErrorMessageParser.parseToErrorMessage(resources, it)
+                    Snackbar.make(layoutRoot, message, Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            launch {
+                repositoryViewModel.viewState.collect {
                     recyclerAdapter.submitList(it.repositoryList)
                 }
             }

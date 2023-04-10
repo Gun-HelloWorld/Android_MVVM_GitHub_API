@@ -10,7 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.gun.testcodeexample.R
 
-fun ImageView.loadUserProfile(url: String, onLoadingFinished: () -> Unit = {}) {
+fun ImageView.loadUserProfile(url: String?, onLoadingFinished: () -> Unit = {}) {
     val listener = object : RequestListener<Drawable> {
         override fun onLoadFailed(
             e: GlideException?,

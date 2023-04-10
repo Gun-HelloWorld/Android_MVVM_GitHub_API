@@ -1,23 +1,24 @@
 package com.gun.testcodeexample.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.gun.testcodeexample.api.retrofit.RetrofitProvider
 import com.gun.testcodeexample.common.BaseViewModel
-import com.gun.testcodeexample.common.Constants.TAG
+import com.gun.testcodeexample.common.state.LoadingState
+import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.data.repository.UserRepository
 import com.gun.testcodeexample.data.repository.UserRepositoryImpl
 import com.gun.testcodeexample.data.source.UserRemoteDataSourceImpl
-import com.gun.testcodeexample.data.dto.user.User
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
-    val viewState = MutableLiveData<ViewState>()
+    private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState.ShowUserList(mutableListOf()))
+    val viewState = _viewState.asStateFlow()
 
     enum class Mode {
         SEARCH,
@@ -25,9 +26,8 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
     }
 
     sealed class ViewState {
-        data class Loading(val isShow: Boolean) : ViewState()
-        data class UserListLoadSuccess(val userList: MutableList<User>) : ViewState()
-        data class UserLoadSuccess(val user: User, val mode: Mode) : ViewState()
+        data class ShowUserList(val userList: MutableList<User>) : ViewState()
+        data class ShowUser(val user: User, val mode: Mode) : ViewState()
     }
 
     companion object {
@@ -42,24 +42,22 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
     }
 
     fun fetchUserList() {
-        viewState.value = ViewState.Loading(true)
+        _loadingState.value = LoadingState(true)
 
         viewModelScope.launch(exceptionHandler) {
             val userList = userRepository.fetchUserList()
-            Log.d(TAG, "UserViewModel - fetchUserList() - userList : $userList")
-            viewState.value = ViewState.UserListLoadSuccess(userList)
-            viewState.value = ViewState.Loading(false)
+            _viewState.value = ViewState.ShowUserList(userList)
+            _loadingState.value = LoadingState(false)
         }
     }
 
     fun fetchUser(userName: String, mode: Mode) {
-        viewState.value = ViewState.Loading(true)
+        _loadingState.value = LoadingState(true)
 
         viewModelScope.launch(exceptionHandler) {
             val user = userRepository.fetchUser(userName)
-            Log.d(TAG, "UserViewModel - fetchUser() - user : $user")
-            viewState.value = ViewState.UserLoadSuccess(user, mode)
-            viewState.value = ViewState.Loading(false)
+            _viewState.value = ViewState.ShowUser(user, mode)
+            _loadingState.value = LoadingState(false)
         }
     }
 }

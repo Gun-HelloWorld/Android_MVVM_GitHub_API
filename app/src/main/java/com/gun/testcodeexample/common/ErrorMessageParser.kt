@@ -2,6 +2,7 @@ package com.gun.testcodeexample.common
 
 import android.content.res.Resources
 import com.gun.testcodeexample.R
+import com.gun.testcodeexample.common.state.ErrorState
 import retrofit2.HttpException
 
 object ErrorMessageParser {

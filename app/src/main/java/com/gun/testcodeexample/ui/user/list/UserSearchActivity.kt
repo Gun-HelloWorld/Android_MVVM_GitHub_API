@@ -8,17 +8,21 @@ import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.gun.testcodeexample.R
 import com.gun.testcodeexample.common.BaseActivity
 import com.gun.testcodeexample.common.ErrorMessageParser
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
+import com.gun.testcodeexample.common.state.LoadingState
 import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.ui.user.detail.UserDetailActivity
 import com.gun.testcodeexample.viewmodel.UserViewModel
 import com.gun.testcodeexample.viewmodel.UserViewModel.Mode
-import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.*
+import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.ShowUser
+import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.ShowUserList
+import kotlinx.coroutines.launch
 
 class UserSearchActivity : BaseActivity(), OnClickListener,
     ItemClickListener<User> {
@@ -50,29 +54,37 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
     }
 
     private fun initObserver() {
-        userViewModel.errorState.observe(this) {
-            showLoadingBar(false)
-            val message = ErrorMessageParser.parseToErrorMessage(resources, it)
-            Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT).show()
-        }
+        lifecycleScope.launchWhenStarted {
 
-        userViewModel.viewState.observe(this) {
-            when (it) {
-                is Loading -> {
+            launch {
+                userViewModel.loadingState.collect {
                     showLoadingBar(it.isShow)
                 }
+            }
 
-                is UserListLoadSuccess -> {
-                    recyclerAdapter.submitList(it.userList)
+            launch {
+                userViewModel.errorState.collect {
+                    val message = ErrorMessageParser.parseToErrorMessage(resources, it)
+                    Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT).show()
                 }
+            }
 
-                is UserLoadSuccess -> {
-                    if (it.mode == Mode.MOVE_DETAIL) {
-                        startDetailActivity(it.user)
-                        return@observe
+            launch {
+                userViewModel.viewState.collect {
+                    when (it) {
+                        is ShowUserList -> {
+                            recyclerAdapter.submitList(it.userList)
+                        }
+
+                        is ShowUser -> {
+                            if (it.mode == Mode.MOVE_DETAIL) {
+                                startDetailActivity(it.user)
+                                return@collect
+                            }
+
+                            recyclerAdapter.submitList(listOf(it.user))
+                        }
                     }
-
-                    recyclerAdapter.submitList(listOf(it.user))
                 }
             }
         }
@@ -87,7 +99,7 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
         val isLastLifecycleResume = this.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
 
         // 중복잡업 막기 (화면 전환 시 애니메이션으로 인해 추가적으로 수명주기 체크 로직 포함)
-        if (userViewModel.viewState.value == Loading(true) || !isLastLifecycleResume) {
+        if (userViewModel.loadingState.value == LoadingState(true) || !isLastLifecycleResume) {
             return
         }
 
@@ -102,7 +114,7 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.card_view_search -> {
-                if (userViewModel.viewState.value == Loading(true)) {
+                if (userViewModel.loadingState.value == LoadingState(true)) {
                     return
                 }
 
