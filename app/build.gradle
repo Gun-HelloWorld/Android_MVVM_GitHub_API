@@ -46,6 +46,18 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.1.0'
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
 
+    // Mockk
+    testImplementation 'io.mockk:mockk:1.13.4'
+    androidTestImplementation 'io.mockk:mockk-android:1.13.4'
+
+    // unitTest 중 라이브데이터에 값을 세팅할 시 내부적으로 MainThread 가 아닐경우 Exception을 발생시키므로
+    // InstantTaskExecutorRule(안드로이드 구성요소 관련 작업들을 모두 동일한 스레드에서 실행)을 사용하기 위해 선언
+    // ErrorMsg : Method getMainLooper in android.os.Looper not mocked.
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+
+    // 코루틴 테스트를 위한 라이브러리
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
