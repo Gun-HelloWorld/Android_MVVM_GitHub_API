@@ -8,15 +8,16 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.cardview.widget.CardView
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import com.bumptech.glide.Glide
 import com.gun.testcodeexample.R
-import com.gun.testcodeexample.common.recyclerview.BaseListAdapter
+import com.gun.testcodeexample.common.recyclerview.BaseItemCallback
 import com.gun.testcodeexample.common.recyclerview.BaseViewHolder
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
 import com.gun.testcodeexample.data.dto.user.User
 
 class UserSearchRecyclerAdapter(val listener: ItemClickListener<User>) :
-    BaseListAdapter<User, UserSearchRecyclerAdapter.UserViewHolder>() {
+    PagingDataAdapter<User, UserSearchRecyclerAdapter.UserViewHolder>(BaseItemCallback()) {
 
     var sharedElementsMap: MutableMap<String, Pair<View, String>> = mutableMapOf()
 
@@ -27,9 +28,10 @@ class UserSearchRecyclerAdapter(val listener: ItemClickListener<User>) :
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val data = currentList[holder.adapterPosition]
-        holder.setData(data)
-        holder.setClickListener(data)
+        getItem(holder.bindingAdapterPosition)?.let {
+            holder.setData(it)
+            holder.setClickListener(it)
+        }
     }
 
     inner class UserViewHolder(private val view: View) : BaseViewHolder(view) {

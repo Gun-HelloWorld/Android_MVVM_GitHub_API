@@ -1,7 +1,9 @@
 package com.gun.testcodeexample.common
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gun.testcodeexample.common.Constants.TAG
 import com.gun.testcodeexample.common.state.ErrorState
 import com.gun.testcodeexample.common.state.LoadingState
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -23,6 +25,8 @@ abstract class BaseViewModel : ViewModel() {
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
+
+        Log.e(TAG,"exceptionHandler : throwable : ${throwable.message}")
 
         viewModelScope.launch {
             _loadingState.emit(LoadingState(false))

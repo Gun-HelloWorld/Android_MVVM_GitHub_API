@@ -18,7 +18,7 @@ class CustomLoadingBar @JvmOverloads constructor(
 
     init {
         val view = LayoutInflater.from(context).inflate(
-            R.layout.layout_custom_loading_bar, this, false
+            R.layout.layout_loading_bar, this, false
         ) as FrameLayout
         addView(view)
 

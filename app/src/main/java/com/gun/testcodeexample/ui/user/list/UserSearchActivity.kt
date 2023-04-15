@@ -1,6 +1,7 @@
 package com.gun.testcodeexample.ui.user.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.EditText
@@ -9,10 +10,12 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.gun.testcodeexample.R
 import com.gun.testcodeexample.common.BaseActivity
+import com.gun.testcodeexample.common.Constants.TAG
 import com.gun.testcodeexample.common.ErrorMessageParser
 import com.gun.testcodeexample.common.recyclerview.ItemClickListener
 import com.gun.testcodeexample.common.state.LoadingState
@@ -22,6 +25,7 @@ import com.gun.testcodeexample.viewmodel.UserViewModel
 import com.gun.testcodeexample.viewmodel.UserViewModel.Mode
 import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.ShowUser
 import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.ShowUserList
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class UserSearchActivity : BaseActivity(), OnClickListener,
@@ -46,7 +50,8 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
 
         initLoadingBar(findViewById(R.id.loading_bar))
 
-        recyclerView.adapter = recyclerAdapter
+        recyclerView.adapter = recyclerAdapter.withLoadStateFooter(LoadingStateAdapter())
+        recyclerView.setHasFixedSize(true)
 
 //        val spaceSize = dpToPx(this, 5).toInt()
 //        recyclerView.addItemDecoration(CommonItemDecoration(top = spaceSize, bottom = spaceSize))
@@ -70,19 +75,22 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
             }
 
             launch {
-                userViewModel.viewState.collect {
+                userViewModel.viewState.collectLatest {
                     when (it) {
+                        is UserViewModel.ViewState.Nothing -> { }
+
                         is ShowUserList -> {
-                            recyclerAdapter.submitList(it.userList)
+                            recyclerAdapter.submitData(it.userList)
                         }
 
                         is ShowUser -> {
                             if (it.mode == Mode.MOVE_DETAIL) {
                                 startDetailActivity(it.user)
-                                return@collect
+                                return@collectLatest
                             }
 
-                            recyclerAdapter.submitList(listOf(it.user))
+                            recyclerAdapter.submitData(lifecycle, PagingData.empty())
+                            recyclerAdapter.submitData(PagingData.from(listOf(it.user)))
                         }
                     }
                 }

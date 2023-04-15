@@ -1,4 +1,4 @@
-package com.gun.testcodeexample.rule
+package com.gun.testcodeexample.test
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

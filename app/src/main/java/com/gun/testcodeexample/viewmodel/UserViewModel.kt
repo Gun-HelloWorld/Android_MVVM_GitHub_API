@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.paging.PagingData
 import com.gun.testcodeexample.api.retrofit.RetrofitProvider
 import com.gun.testcodeexample.common.BaseViewModel
 import com.gun.testcodeexample.common.state.LoadingState
@@ -11,13 +12,13 @@ import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.data.repository.UserRepository
 import com.gun.testcodeexample.data.repository.UserRepositoryImpl
 import com.gun.testcodeexample.data.source.UserRemoteDataSourceImpl
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.gun.testcodeexample.data.source.UserRemotePagingDataSourceImpl
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val userRepository: UserRepository) : BaseViewModel() {
 
-    private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState.ShowUserList(mutableListOf()))
+    private val _viewState: MutableStateFlow<ViewState> = MutableStateFlow(ViewState.Nothing)
     val viewState = _viewState.asStateFlow()
 
     enum class Mode {
@@ -26,7 +27,8 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
     }
 
     sealed class ViewState {
-        data class ShowUserList(val userList: MutableList<User>) : ViewState()
+        object Nothing: ViewState()
+        data class ShowUserList(val userList: PagingData<User>) : ViewState()
         data class ShowUser(val user: User, val mode: Mode) : ViewState()
     }
 
@@ -35,7 +37,8 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
             initializer {
                 val userService = RetrofitProvider.getUserService()
                 val userDataSource = UserRemoteDataSourceImpl(userService)
-                val userRepository = UserRepositoryImpl(userDataSource)
+                val userPagingDataSource = UserRemotePagingDataSourceImpl(userService)
+                val userRepository = UserRepositoryImpl(userDataSource, userPagingDataSource)
                 UserViewModel(userRepository)
             }
         }
@@ -46,7 +49,7 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
 
         viewModelScope.launch(exceptionHandler) {
             val userList = userRepository.fetchUserList()
-            _viewState.value = ViewState.ShowUserList(userList)
+            _viewState.value = ViewState.ShowUserList(userList.flow.first())
             _loadingState.value = LoadingState(false)
         }
     }
