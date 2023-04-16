@@ -15,7 +15,6 @@ import com.gun.testcodeexample.data.source.UserRemoteDataSourceImpl
 import com.gun.testcodeexample.data.source.UserRemotePagingDataSourceImpl
 import com.gun.testcodeexample.ui.user.list.state.DataState
 import com.gun.testcodeexample.ui.user.list.state.EventState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -44,30 +43,31 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
         }
     }
 
-    fun fetchUserList() {
-        _loadingStateFlow.value = LoadingState(true)
+    fun loadingStateChange(isLoading: Boolean) {
+        _loadingStateFlow.value = LoadingState(isLoading)
+    }
 
+    fun fetchUserList() {
+        // 페이징 조회 시 UserSearchActivity 의 addLoadStateListener 에 의해 변경
         viewModelScope.launch(exceptionHandler) {
             val userList = userRepository.fetchUserList().flow.cachedIn(viewModelScope)
             _dataStateFlow.value = DataState.ShowUserList(userList.first())
-            delay(1000)
-            _loadingStateFlow.value = LoadingState(false)
         }
     }
 
     fun fetchUser(userName: String, mode: Mode) {
-        _loadingStateFlow.value = LoadingState(true)
+        loadingStateChange(true)
 
         viewModelScope.launch(exceptionHandler) {
             val user = userRepository.fetchUser(userName)
 
             if (mode == Mode.MOVE_DETAIL) {
                 _eventSharedFlow.emit(EventState.MoveDetailActivity(user))
-                _loadingStateFlow.value = LoadingState(false)
+                loadingStateChange(false)
                 return@launch
             } else {
                 _dataStateFlow.value = DataState.ShowUser(user)
-                _loadingStateFlow.value = LoadingState(false)
+                loadingStateChange(false)
             }
         }
     }

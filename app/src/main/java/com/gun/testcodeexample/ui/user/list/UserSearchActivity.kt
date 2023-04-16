@@ -7,6 +7,7 @@ import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
 import com.gun.testcodeexample.R
@@ -43,6 +44,11 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
         binding.userViewModel = userViewModel
 
         initLoadingBar(binding.loadingBar)
+
+        recyclerAdapter.addLoadStateListener {
+            val isLoading = it.source.refresh is LoadState.Loading
+            userViewModel.loadingStateChange(isLoading)
+        }
 
         binding.recyclerView.apply {
             adapter = recyclerAdapter.withLoadStateFooter(LoadingStateAdapter())
