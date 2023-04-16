@@ -38,6 +38,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:inputType">text</item>
         <item name="android:maxLines">1</item>
+        <item name="android:imeOptions">actionDone</item>
         <item name="android:textColor">@color/color_common_label_white</item>
         <item name="android:textColorHint">@color/color_common_edit_hint_grey</item>
         <item name="android:textSize">15dp</item>
