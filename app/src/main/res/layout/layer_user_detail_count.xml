@@ -1,61 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/activity_user_detail">
 
-    <TextView
-        android:id="@+id/tv_value_repository_cnt"
-        style="@style/TextView_User_Contents_Count_Value_Style"
-        android:layout_marginTop="30dp"
-        tools:text="101"
-        android:text="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_value_followers_cnt"
-        app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"/>
+    <data>
+        <variable
+            name="user"
+            type="com.gun.testcodeexample.data.dto.user.User" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_value_followers_cnt"
-        style="@style/TextView_User_Contents_Count_Value_Style"
-        tools:text="102"
-        android:text="0"
-        app:layout_constraintStart_toEndOf="@id/tv_value_repository_cnt"
-        app:layout_constraintEnd_toStartOf="@id/tv_value_following_cnt"
-        app:layout_constraintTop_toTopOf="@id/tv_value_repository_cnt"
-        app:layout_constraintBottom_toBottomOf="@id/tv_value_repository_cnt"/>
+    <merge>
 
-    <TextView
-        android:id="@+id/tv_value_following_cnt"
-        style="@style/TextView_User_Contents_Count_Value_Style"
-        tools:text="103"
-        android:text="0"
-        app:layout_constraintStart_toEndOf="@id/tv_value_followers_cnt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_value_repository_cnt"
-        app:layout_constraintBottom_toBottomOf="@id/tv_value_repository_cnt"/>
+        <TextView
+            android:id="@+id/tv_value_repository_cnt"
+            style="@style/TextView_User_Contents_Count_Value_Style"
+            android:layout_marginTop="30dp"
+            tools:text="101"
+            android:text="@{String.valueOf(user.public_repos)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_value_followers_cnt"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"/>
 
-    <TextView
-        android:id="@+id/tv_label_repository_cnt"
-        style="@style/TextView_User_Contents_Count_Label_Style"
-        android:text="@string/label_repositories"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_label_followers_cnt"
-        app:layout_constraintTop_toBottomOf="@id/tv_value_repository_cnt" />
+        <TextView
+            android:id="@+id/tv_value_followers_cnt"
+            style="@style/TextView_User_Contents_Count_Value_Style"
+            tools:text="102"
+            android:text="@{String.valueOf(user.followers)}"
+            app:layout_constraintStart_toEndOf="@id/tv_value_repository_cnt"
+            app:layout_constraintEnd_toStartOf="@id/tv_value_following_cnt"
+            app:layout_constraintTop_toTopOf="@id/tv_value_repository_cnt"
+            app:layout_constraintBottom_toBottomOf="@id/tv_value_repository_cnt"/>
 
-    <TextView
-        android:id="@+id/tv_label_followers_cnt"
-        style="@style/TextView_User_Contents_Count_Label_Style"
-        android:text="@string/label_followers"
-        app:layout_constraintStart_toEndOf="@id/tv_label_repository_cnt"
-        app:layout_constraintEnd_toStartOf="@id/tv_label_following_cnt"
-        app:layout_constraintTop_toTopOf="@id/tv_label_repository_cnt"
-        app:layout_constraintBottom_toBottomOf="@id/tv_label_repository_cnt"/>
+        <TextView
+            android:id="@+id/tv_value_following_cnt"
+            style="@style/TextView_User_Contents_Count_Value_Style"
+            tools:text="103"
+            android:text="@{String.valueOf(user.following)}"
+            app:layout_constraintStart_toEndOf="@id/tv_value_followers_cnt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_value_repository_cnt"
+            app:layout_constraintBottom_toBottomOf="@id/tv_value_repository_cnt"/>
 
-    <TextView
-        android:id="@+id/tv_label_following_cnt"
-        style="@style/TextView_User_Contents_Count_Label_Style"
-        android:text="@string/label_following"
-        app:layout_constraintStart_toEndOf="@id/tv_label_followers_cnt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_label_repository_cnt" />
-</merge>
+        <TextView
+            android:id="@+id/tv_label_repository_cnt"
+            style="@style/TextView_User_Contents_Count_Label_Style"
+            android:text="@string/label_repositories"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_label_followers_cnt"
+            app:layout_constraintTop_toBottomOf="@id/tv_value_repository_cnt" />
+
+        <TextView
+            android:id="@+id/tv_label_followers_cnt"
+            style="@style/TextView_User_Contents_Count_Label_Style"
+            android:text="@string/label_followers"
+            app:layout_constraintStart_toEndOf="@id/tv_label_repository_cnt"
+            app:layout_constraintEnd_toStartOf="@id/tv_label_following_cnt"
+            app:layout_constraintTop_toTopOf="@id/tv_label_repository_cnt"
+            app:layout_constraintBottom_toBottomOf="@id/tv_label_repository_cnt"/>
+
+        <TextView
+            android:id="@+id/tv_label_following_cnt"
+            style="@style/TextView_User_Contents_Count_Label_Style"
+            android:text="@string/label_following"
+            app:layout_constraintStart_toEndOf="@id/tv_label_followers_cnt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_label_repository_cnt" />
+    </merge>
+
+</layout>

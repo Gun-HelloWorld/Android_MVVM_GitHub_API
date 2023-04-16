@@ -1,76 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_common_app_theme_dark"
-    android:paddingHorizontal="20dp"
-    android:paddingTop="20dp"
-    android:id="@+id/root_layout"
-    tools:context=".ui.user.list.UserSearchActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tv_title"
-        style="@style/TextView_Activity_Title_Style"
-        android:text="@string/title_user_search"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    <data>
+        <variable
+            name="userViewModel"
+            type="com.gun.testcodeexample.viewmodel.UserViewModel" />
 
-    <EditText
-        android:id="@+id/et_search"
-        style="@style/EditText_Input_Style"
-        android:layout_marginTop="20dp"
-        android:hint="@string/hint_user_search_guide"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/card_view_search"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+    </data>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view_search"
-        style="@style/CardView_Default_Style"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginVertical="3dp"
-        app:cardUseCompatPadding="false"
-        android:foreground="?android:selectableItemBackground"
-        app:layout_constraintStart_toEndOf="@id/et_search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/et_search"
-        app:layout_constraintBottom_toBottomOf="@id/et_search">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_common_app_theme_dark"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:id="@+id/root_layout"
+        tools:context=".ui.user.list.UserSearchActivity">
 
         <TextView
-            style="@style/Button_Common_Style"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="20dp"
-            android:gravity="center"
-            android:text="@string/label_search"/>
-    </androidx.cardview.widget.CardView>
+            android:id="@+id/tv_title"
+            style="@style/TextView_Activity_Title_Style"
+            android:text="@string/title_user_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <EditText
+            android:id="@+id/et_search"
+            style="@style/EditText_Input_Style"
+            android:layout_marginTop="20dp"
+            android:hint="@string/hint_user_search_guide"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/card_view_search"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_search"
+            style="@style/CardView_Default_Style"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginVertical="3dp"
+            app:cardUseCompatPadding="false"
+            android:foreground="?android:selectableItemBackground"
+            app:layout_constraintStart_toEndOf="@id/et_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_search"
+            app:layout_constraintBottom_toBottomOf="@id/et_search">
+
+            <TextView
+                style="@style/Button_Common_Style"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="20dp"
+                android:gravity="center"
+                android:text="@string/label_search"
+                android:onClick="@{(v) -> userViewModel.onClickSearch(etSearch.getText().toString())}"/>
+        </androidx.cardview.widget.CardView>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        style="@style/RecyclerView_Style"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_marginTop="20dp"
-        android:paddingBottom="20dp"
-        tools:listitem="@layout/holder_user_search"
-        tools:itemCount="6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_search"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            style="@style/RecyclerView_Style"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="20dp"
+            tools:listitem="@layout/holder_user_search"
+            tools:itemCount="6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    <com.gun.testcodeexample.common.CustomLoadingBar
-        android:id="@+id/loading_bar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <com.gun.testcodeexample.common.CustomLoadingBar
+            android:id="@+id/loading_bar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

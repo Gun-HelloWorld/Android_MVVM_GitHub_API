@@ -1,43 +1,37 @@
 package com.gun.testcodeexample.ui.user.list
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.View.OnClickListener
-import android.widget.EditText
 import androidx.activity.viewModels
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.util.Pair
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.gun.testcodeexample.R
 import com.gun.testcodeexample.common.BaseActivity
-import com.gun.testcodeexample.common.Constants.TAG
 import com.gun.testcodeexample.common.ErrorMessageParser
-import com.gun.testcodeexample.common.recyclerview.ItemClickListener
+import com.gun.testcodeexample.common.recyclerview.ItemClickTransitionListener
 import com.gun.testcodeexample.common.state.LoadingState
 import com.gun.testcodeexample.data.dto.user.User
+import com.gun.testcodeexample.databinding.ActivityUserSearchBinding
 import com.gun.testcodeexample.ui.user.detail.UserDetailActivity
 import com.gun.testcodeexample.viewmodel.UserViewModel
 import com.gun.testcodeexample.viewmodel.UserViewModel.Mode
-import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.ShowUser
-import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.ShowUserList
+import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class UserSearchActivity : BaseActivity(), OnClickListener,
-    ItemClickListener<User> {
+class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
+
+    private val sharedElementsMap: MutableMap<String, Pair<View, String>> = mutableMapOf()
 
     private val userViewModel by viewModels<UserViewModel> { UserViewModel.Factory }
 
-    private val rootLayout: ConstraintLayout by lazy { findViewById(R.id.root_layout) }
-    private val etSearch: EditText by lazy { findViewById(R.id.et_search) }
-    private val recyclerView: RecyclerView by lazy { findViewById(R.id.recycler_view) }
-
     private val recyclerAdapter = UserSearchRecyclerAdapter(this)
+
+    private lateinit var binding: ActivityUserSearchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,16 +40,15 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
     }
 
     private fun initLayout() {
-        setContentView(R.layout.activity_user_search)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_user_search)
+        binding.userViewModel = userViewModel
 
-        initLoadingBar(findViewById(R.id.loading_bar))
+        initLoadingBar(binding.loadingBar)
 
-        recyclerView.adapter = recyclerAdapter.withLoadStateFooter(LoadingStateAdapter())
-        recyclerView.setHasFixedSize(true)
-
-//        val spaceSize = dpToPx(this, 5).toInt()
-//        recyclerView.addItemDecoration(CommonItemDecoration(top = spaceSize, bottom = spaceSize))
-        findViewById<CardView>(R.id.card_view_search).setOnClickListener(this)
+        binding.recyclerView.apply {
+            adapter = recyclerAdapter.withLoadStateFooter(LoadingStateAdapter())
+            setHasFixedSize(true)
+        }
     }
 
     private fun initObserver() {
@@ -70,7 +63,7 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
             launch {
                 userViewModel.errorState.collect {
                     val message = ErrorMessageParser.parseToErrorMessage(resources, it)
-                    Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT).show()
                 }
             }
 
@@ -92,6 +85,10 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
                             recyclerAdapter.submitData(lifecycle, PagingData.empty())
                             recyclerAdapter.submitData(PagingData.from(listOf(it.user)))
                         }
+
+                        is MoveDetailActivity -> {
+                            startDetailActivity(it.user)
+                        }
                     }
                 }
             }
@@ -99,11 +96,11 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
     }
 
     private fun startDetailActivity(user: User) {
-        val pairList = recyclerAdapter.sharedElementsMap[user.login]
+        val pairList = sharedElementsMap[user.login]
         UserDetailActivity.startActivity(this, user, pairList)
     }
 
-    override fun onItemClick(data: User) {
+    override fun onItemClick(view: View, transitionView: View, data: User) {
         val isLastLifecycleResume = this.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
 
         // 중복잡업 막기 (화면 전환 시 애니메이션으로 인해 추가적으로 수명주기 체크 로직 포함)
@@ -111,30 +108,9 @@ class UserSearchActivity : BaseActivity(), OnClickListener,
             return
         }
 
-        if (data.existUserDetail()) {
-            startDetailActivity(data)
-            return
-        }
+        val imageTransitionPair = Pair(transitionView, transitionView.transitionName)
+        sharedElementsMap[data.login] = imageTransitionPair
 
-        userViewModel.fetchUser(data.login, Mode.MOVE_DETAIL)
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.card_view_search -> {
-                if (userViewModel.loadingState.value == LoadingState(true)) {
-                    return
-                }
-
-                val inputText = etSearch.text.toString()
-                    .replace(" ", "")
-
-                if (inputText.isEmpty()) {
-                    userViewModel.fetchUserList()
-                } else {
-                    userViewModel.fetchUser(inputText, Mode.SEARCH)
-                }
-            }
-        }
+        userViewModel.onClickItem(data)
     }
 }

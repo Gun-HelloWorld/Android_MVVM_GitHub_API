@@ -1,81 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="20dp"
-    android:id="@+id/layout_root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.user.detail.UserDetailActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_user"
-        style="@style/ImageView_Circle_Style"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="20dp"
-        android:transitionName="@string/transition_user_profile_img"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    <data>
+        <variable
+            name="user"
+            type="com.gun.testcodeexample.data.dto.user.User" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_user_nickname"
-        style="@style/TextView_User_Profile_Style"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:textSize="20dp"
-        tools:text="사용자 닉네임"
-        app:layout_constraintStart_toStartOf="@id/iv_user"
-        app:layout_constraintEnd_toEndOf="@id/iv_user"
-        app:layout_constraintTop_toBottomOf="@id/iv_user"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
 
-    <!-- Repository, Followers, Following -->
-    <include layout="@layout/layer_user_detail_count"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_user"
+            style="@style/ImageView_Circle_Style"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="20dp"
+            android:transitionName="@string/transition_user_profile_img"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <View
-        android:id="@+id/view_divider"
-        style="@style/View_Divider_Style"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_label_repository_cnt"
-        tools:ignore="NotSibling" />
+        <TextView
+            android:id="@+id/tv_user_nickname"
+            style="@style/TextView_User_Profile_Style"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textSize="20dp"
+            tools:text="사용자 닉네임"
+            android:text="@{user.login}"
+            app:layout_constraintStart_toStartOf="@id/iv_user"
+            app:layout_constraintEnd_toEndOf="@id/iv_user"
+            app:layout_constraintTop_toBottomOf="@id/iv_user"/>
 
-    <TextView
-        android:id="@+id/tv_label_repository"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingVertical="20dp"
-        android:paddingStart="10dp"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/color_common_special_label_mint"
-        android:text="@string/label_repositories"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_divider"/>
+        <!-- Repository, Followers, Following -->
+        <include
+            layout="@layout/layer_user_detail_count"
+            bind:user="@{user}"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        style="@style/RecyclerView_Style"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:paddingBottom="20dp"
-        tools:listitem="@layout/holder_repository"
-        tools:itemCount="6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_label_repository"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <View
+            android:id="@+id/view_divider"
+            style="@style/View_Divider_Style"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_label_repository_cnt"
+            tools:ignore="NotSibling" />
 
-    <com.gun.testcodeexample.common.CustomLoadingBar
-        android:id="@+id/loading_bar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="@id/recycler_view"
-        app:layout_constraintEnd_toEndOf="@id/recycler_view"
-        app:layout_constraintTop_toTopOf="@id/recycler_view"
-        app:layout_constraintBottom_toBottomOf="@id/recycler_view" />
+        <TextView
+            android:id="@+id/tv_label_repository"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingVertical="20dp"
+            android:paddingStart="10dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/color_common_special_label_mint"
+            android:text="@string/label_repositories"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            style="@style/RecyclerView_Style"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:paddingBottom="20dp"
+            tools:listitem="@layout/holder_repository"
+            tools:itemCount="6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_label_repository"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.gun.testcodeexample.common.CustomLoadingBar
+            android:id="@+id/loading_bar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="@id/recycler_view"
+            app:layout_constraintEnd_toEndOf="@id/recycler_view"
+            app:layout_constraintTop_toTopOf="@id/recycler_view"
+            app:layout_constraintBottom_toBottomOf="@id/recycler_view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

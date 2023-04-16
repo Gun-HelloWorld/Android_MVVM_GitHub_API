@@ -13,7 +13,10 @@ import com.gun.testcodeexample.data.repository.UserRepository
 import com.gun.testcodeexample.data.repository.UserRepositoryImpl
 import com.gun.testcodeexample.data.source.UserRemoteDataSourceImpl
 import com.gun.testcodeexample.data.source.UserRemotePagingDataSourceImpl
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class UserViewModel(private val userRepository: UserRepository) : BaseViewModel() {
@@ -27,9 +30,10 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
     }
 
     sealed class ViewState {
-        object Nothing: ViewState()
+        object Nothing : ViewState()
         data class ShowUserList(val userList: PagingData<User>) : ViewState()
         data class ShowUser(val user: User, val mode: Mode) : ViewState()
+        data class MoveDetailActivity(val user: User): ViewState()
     }
 
     companion object {
@@ -50,6 +54,7 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
         viewModelScope.launch(exceptionHandler) {
             val userList = userRepository.fetchUserList()
             _viewState.value = ViewState.ShowUserList(userList.flow.first())
+            delay(1000)
             _loadingState.value = LoadingState(false)
         }
     }
@@ -59,8 +64,38 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
 
         viewModelScope.launch(exceptionHandler) {
             val user = userRepository.fetchUser(userName)
+
+            if (mode == Mode.MOVE_DETAIL) {
+                _viewState.value = ViewState.MoveDetailActivity(user)
+                _loadingState.value = LoadingState(false)
+                return@launch
+            }
+
             _viewState.value = ViewState.ShowUser(user, mode)
             _loadingState.value = LoadingState(false)
         }
+    }
+
+    fun onClickSearch(inputText: String) {
+        if (loadingState.value == LoadingState(true)) {
+            return
+        }
+
+        val searchData = inputText.replace(" ", "")
+
+        if (searchData.isEmpty()) {
+            fetchUserList()
+        } else {
+            fetchUser(inputText, Mode.SEARCH)
+        }
+    }
+
+    fun onClickItem(user: User) {
+        if (user.existUserDetail()) {
+            _viewState.value = ViewState.MoveDetailActivity(user)
+            return
+        }
+
+        fetchUser(user.login, Mode.MOVE_DETAIL)
     }
 }
