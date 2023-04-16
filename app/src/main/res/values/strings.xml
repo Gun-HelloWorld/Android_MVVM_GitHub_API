@@ -1,7 +1,7 @@
 <resources>
-    <string name="transition_user_profile_img">UserProfileImage</string>
+    <string name="app_name">GitHubApiExample</string>
 
-    <string name="app_name">TestCodeExample</string>
+    <string name="transition_user_profile_img">UserProfileImage</string>
 
     <string name="title_user_search">Search</string>
 

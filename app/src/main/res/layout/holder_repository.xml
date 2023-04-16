@@ -8,7 +8,7 @@
 
         <variable
             name="repository"
-            type="com.gun.testcodeexample.data.dto.repository.Repository" />
+            type="com.gun.githubapi.data.dto.repository.Repository" />
     </data>
 
     <FrameLayout

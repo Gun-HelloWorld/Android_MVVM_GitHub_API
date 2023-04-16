@@ -6,11 +6,11 @@
     <data>
         <variable
             name="listener"
-            type="com.gun.testcodeexample.common.recyclerview.ItemClickTransitionListener" />
+            type="com.gun.githubapi.common.recyclerview.ItemClickTransitionListener" />
 
         <variable
             name="user"
-            type="com.gun.testcodeexample.data.dto.user.User" />
+            type="com.gun.githubapi.data.dto.user.User" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.gun.testcodeexample'
+    namespace 'com.gun.githubapi'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.gun.testcodeexample"
+        applicationId "com.gun.githubapi"
         minSdk 23
         targetSdk 33
         versionCode 1

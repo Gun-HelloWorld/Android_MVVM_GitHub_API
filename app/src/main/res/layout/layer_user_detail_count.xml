@@ -7,7 +7,7 @@
     <data>
         <variable
             name="user"
-            type="com.gun.testcodeexample.data.dto.user.User" />
+            type="com.gun.githubapi.data.dto.user.User" />
     </data>
 
     <merge>
