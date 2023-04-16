@@ -19,7 +19,6 @@ import com.gun.testcodeexample.common.ErrorMessageParser
 import com.gun.testcodeexample.common.ext.loadUserProfile
 import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.databinding.ActivityUserDetailBinding
-import com.gun.testcodeexample.viewmodel.RepositoryViewModel
 import kotlinx.coroutines.launch
 
 class UserDetailActivity : BaseActivity() {
@@ -66,19 +65,19 @@ class UserDetailActivity : BaseActivity() {
         lifecycleScope.launchWhenStarted {
 
             launch {
-                repositoryViewModel.loadingState.collect {
+                repositoryViewModel.loadingStateFlow.collect {
                     showLoadingBar(it.isShow)
                 }
             }
             launch {
-                repositoryViewModel.errorState.collect {
+                repositoryViewModel.errorStateFlow.collect {
                     val message = ErrorMessageParser.parseToErrorMessage(resources, it)
                     Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
                 }
             }
 
             launch {
-                repositoryViewModel.viewState.collect {
+                repositoryViewModel.dataStateFlow.collect {
                     recyclerAdapter.submitList(it.repositoryList)
                 }
             }

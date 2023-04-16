@@ -6,7 +6,7 @@
     <data>
         <variable
             name="userViewModel"
-            type="com.gun.testcodeexample.viewmodel.UserViewModel" />
+            type="com.gun.testcodeexample.ui.user.list.UserViewModel" />
 
     </data>
 

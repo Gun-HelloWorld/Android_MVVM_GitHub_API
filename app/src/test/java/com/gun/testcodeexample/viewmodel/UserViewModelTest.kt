@@ -6,6 +6,8 @@ import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.test.MainDispatcherRule
 import com.gun.testcodeexample.test.TestDiffCallback
 import com.gun.testcodeexample.test.TestListCallback
+import com.gun.testcodeexample.ui.user.list.UserViewModel
+import com.gun.testcodeexample.ui.user.list.state.DataState
 import io.mockk.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,10 +51,10 @@ class UserViewModelTest {
     }
 
     @Test
-    fun fetchUserList_success_viewState_change() = runTest {
+    fun fetchUserList_success_dataState_change() = runTest {
         // Given
         val expectedUserData = PagingData.from(testUserList)
-        val mockFlow: MutableStateFlow<UserViewModel.ViewState> = MutableStateFlow(UserViewModel.ViewState.Nothing)
+        val mockFlow: MutableStateFlow<DataState> = MutableStateFlow(DataState.Nothing)
         val mockViewModel = mockk<UserViewModel>()
         val differ = AsyncPagingDataDiffer<User>( // PagingData 는 값을 추출할 수 없으므로, PagingData 를 RecyclerView 에 매핑하는 헬퍼 클래스 사용
             diffCallback = TestDiffCallback(),
@@ -61,12 +63,12 @@ class UserViewModelTest {
         )
 
         every { mockViewModel.fetchUserList() } just runs
-        coEvery { mockViewModel.viewState } returns mockFlow
+        coEvery { mockViewModel.dataStateFlow } returns mockFlow
 
         //When
         mockViewModel.fetchUserList()
-        mockFlow.value = UserViewModel.ViewState.ShowUserList(expectedUserData)
-        val result = mockViewModel.viewState.value as UserViewModel.ViewState.ShowUserList
+        mockFlow.value = DataState.ShowUserList(expectedUserData)
+        val result = mockViewModel.dataStateFlow.value as DataState.ShowUserList
 
         val job = launch {
             val pagingData = result.userList
@@ -78,31 +80,31 @@ class UserViewModelTest {
         val userList = differ.snapshot().items
 
         // Then
-        assert(mockViewModel.viewState.value is UserViewModel.ViewState.ShowUserList)
+        assert(mockViewModel.dataStateFlow.value is DataState.ShowUserList)
         assertEquals(testUserList, userList)
 
         job.cancel()
     }
 
     @Test
-    fun fetchUser_success_viewState_change() {
+    fun fetchUser_success_dataState_change() {
         // Given
         val expectedData = User("user1",1)
         val mode = UserViewModel.Mode.SEARCH
-        val mockFlow: MutableStateFlow<UserViewModel.ViewState> = MutableStateFlow(UserViewModel.ViewState.Nothing)
+        val mockFlow: MutableStateFlow<DataState> = MutableStateFlow(DataState.Nothing)
         val mockViewModel = mockk<UserViewModel>()
 
         //When
         every { mockViewModel.fetchUser("user1", mode) } just runs
-        coEvery { mockViewModel.viewState } returns mockFlow
+        coEvery { mockViewModel.dataStateFlow } returns mockFlow
 
         mockViewModel.fetchUser("user1", mode)
-        mockFlow.value = UserViewModel.ViewState.ShowUser(expectedData, mode)
+        mockFlow.value = DataState.ShowUser(expectedData)
 
-        val result = mockViewModel.viewState.value as UserViewModel.ViewState.ShowUser
+        val result = mockViewModel.dataStateFlow.value as DataState.ShowUser
 
         // Then
-        assert(mockViewModel.viewState.value is UserViewModel.ViewState.ShowUser)
+        assert(mockViewModel.dataStateFlow.value is DataState.ShowUser)
         assertEquals(expectedData, result.user)
     }
 }

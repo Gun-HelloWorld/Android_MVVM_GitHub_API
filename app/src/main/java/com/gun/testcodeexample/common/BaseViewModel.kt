@@ -17,11 +17,11 @@ import java.io.IOException
 
 abstract class BaseViewModel : ViewModel() {
 
-    private val _errorState = MutableSharedFlow<ErrorState>()
-    val errorState = _errorState.asSharedFlow()
+    private val _errorStateFlow = MutableSharedFlow<ErrorState>()
+    val errorStateFlow = _errorStateFlow.asSharedFlow()
 
-    protected val _loadingState = MutableStateFlow(LoadingState(false))
-    val loadingState = _loadingState.asStateFlow()
+    protected val _loadingStateFlow = MutableStateFlow(LoadingState(false))
+    val loadingStateFlow = _loadingStateFlow.asStateFlow()
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
@@ -29,12 +29,12 @@ abstract class BaseViewModel : ViewModel() {
         Log.e(TAG,"exceptionHandler : throwable : ${throwable.message}")
 
         viewModelScope.launch {
-            _loadingState.emit(LoadingState(false))
+            _loadingStateFlow.emit(LoadingState(false))
 
             when (throwable) {
-                is HttpException -> _errorState.emit(ErrorState.HttpExceptionState(throwable))
-                is IOException -> _errorState.emit(ErrorState.IOExceptionState(throwable))
-                else -> _errorState.emit(ErrorState.ExceptionState(throwable))
+                is HttpException -> _errorStateFlow.emit(ErrorState.HttpExceptionState(throwable))
+                is IOException -> _errorStateFlow.emit(ErrorState.IOExceptionState(throwable))
+                else -> _errorStateFlow.emit(ErrorState.ExceptionState(throwable))
             }
         }
     }

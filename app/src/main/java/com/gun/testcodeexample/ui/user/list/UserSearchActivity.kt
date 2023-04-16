@@ -17,9 +17,8 @@ import com.gun.testcodeexample.common.state.LoadingState
 import com.gun.testcodeexample.data.dto.user.User
 import com.gun.testcodeexample.databinding.ActivityUserSearchBinding
 import com.gun.testcodeexample.ui.user.detail.UserDetailActivity
-import com.gun.testcodeexample.viewmodel.UserViewModel
-import com.gun.testcodeexample.viewmodel.UserViewModel.Mode
-import com.gun.testcodeexample.viewmodel.UserViewModel.ViewState.*
+import com.gun.testcodeexample.ui.user.list.state.DataState
+import com.gun.testcodeexample.ui.user.list.state.EventState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -55,38 +54,39 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
         lifecycleScope.launchWhenStarted {
 
             launch {
-                userViewModel.loadingState.collect {
+                userViewModel.loadingStateFlow.collect {
                     showLoadingBar(it.isShow)
                 }
             }
 
             launch {
-                userViewModel.errorState.collect {
+                userViewModel.errorStateFlow.collect {
                     val message = ErrorMessageParser.parseToErrorMessage(resources, it)
                     Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT).show()
                 }
             }
 
             launch {
-                userViewModel.viewState.collectLatest {
+                userViewModel.dataStateFlow.collectLatest {
                     when (it) {
-                        is UserViewModel.ViewState.Nothing -> { }
+                        is DataState.Nothing -> {}
 
-                        is ShowUserList -> {
+                        is DataState.ShowUserList -> {
                             recyclerAdapter.submitData(it.userList)
                         }
 
-                        is ShowUser -> {
-                            if (it.mode == Mode.MOVE_DETAIL) {
-                                startDetailActivity(it.user)
-                                return@collectLatest
-                            }
-
+                        is DataState.ShowUser -> {
                             recyclerAdapter.submitData(lifecycle, PagingData.empty())
                             recyclerAdapter.submitData(PagingData.from(listOf(it.user)))
                         }
+                    }
+                }
+            }
 
-                        is MoveDetailActivity -> {
+            launch {
+                userViewModel.eventSharedFlow.collectLatest {
+                    when (it) {
+                        is EventState.MoveDetailActivity -> {
                             startDetailActivity(it.user)
                         }
                     }
@@ -104,7 +104,7 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
         val isLastLifecycleResume = this.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
 
         // 중복잡업 막기 (화면 전환 시 애니메이션으로 인해 추가적으로 수명주기 체크 로직 포함)
-        if (userViewModel.loadingState.value == LoadingState(true) || !isLastLifecycleResume) {
+        if (userViewModel.loadingStateFlow.value == LoadingState(true) || !isLastLifecycleResume) {
             return
         }
 
