@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="listener"
+            type="com.gun.githubapi.common.recyclerview.ItemClickListener" />
+
+        <variable
+            name="user"
+            type="com.gun.githubapi.data.dto.user.User" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        style="@style/CardView_Default_Style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{(v) -> listener.onItemClick(user)}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_user"
+                style="@style/ImageView_Circle_Style"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:imageUrl="@{user.avatarUrl}"
+                app:placeholder="@{@drawable/icon_profile_blank}"
+                android:transitionName="@string/transition_user_profile_img" />
+
+            <TextView
+                android:id="@+id/tv_user_nickname"
+                style="@style/TextView_User_Profile_Style"
+                android:layout_width="0dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:textSize="11dp"
+                tools:text="홍길동"
+                android:text="@{user.login}"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

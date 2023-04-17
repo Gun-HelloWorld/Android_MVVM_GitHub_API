@@ -10,23 +10,26 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.viewpager2.widget.ViewPager2
 import com.gun.githubapi.R
 import com.gun.githubapi.common.BaseActivity
 import com.gun.githubapi.common.Constants.INTENT_KEY_USER_DATA
-import com.gun.githubapi.common.ErrorMessageParser
+import com.gun.githubapi.common.ZoomOutPageTransformer
 import com.gun.githubapi.common.ext.loadUserProfile
 import com.gun.githubapi.data.dto.user.User
 import com.gun.githubapi.databinding.ActivityUserDetailBinding
+import com.gun.githubapi.ui.user.detail.fragment.DetailPagerAdapter
 import kotlinx.coroutines.launch
 
 class UserDetailActivity : BaseActivity() {
-    private val recyclerAdapter = RepositoryRecyclerAdapter()
-
-    private val repositoryViewModel by viewModels<RepositoryViewModel> { RepositoryViewModel.Factory }
 
     private lateinit var binding: ActivityUserDetailBinding
+    private val viewPagerAdapter = DetailPagerAdapter(this)
+
+    private val userDetailViewModel by viewModels<UserDetailViewModel> { UserDetailViewModel.Factory }
 
     companion object {
         fun startActivity(context: Context, user: User, vararg pairs: Pair<View, String>?) {
@@ -44,41 +47,52 @@ class UserDetailActivity : BaseActivity() {
         supportPostponeEnterTransition()
 
         initLayout()
+
         initObserver()
 
         initIntentData()?.run {
             showUserProfileTransition(this)
             binding.user = this
-            repositoryViewModel.fetchRepositoryList(login)
+            userDetailViewModel.setUserNickName(login)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.viewPager.unregisterOnPageChangeCallback(pageChangeCallback)
     }
 
     private fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail)
 
-        initLoadingBar(findViewById(R.id.loading_bar))
-
-        binding.recyclerView.adapter = recyclerAdapter
+        with(binding) {
+            initLoadingBar(loadingBar)
+            lifecycleOwner = this@UserDetailActivity
+            viewModel = userDetailViewModel
+            viewPager.apply {
+                setPageTransformer(ZoomOutPageTransformer())
+                registerOnPageChangeCallback(pageChangeCallback)
+                adapter = viewPagerAdapter
+            }
+        }
     }
 
     private fun initObserver() {
-        lifecycleScope.launchWhenStarted {
-
-            launch {
-                repositoryViewModel.loadingStateFlow.collect {
-                    showLoadingBar(it.isShow)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    userDetailViewModel.selectedPageStateFlow.collect {
+                        binding.viewPager.setCurrentItem(it, true)
+                        binding.layoutUserDetailCount.layoutRepository.isSelected = it == 0
+                        binding.layoutUserDetailCount.layoutFollowers.isSelected = it == 1
+                        binding.layoutUserDetailCount.layoutFollowing.isSelected = it == 2
+                    }
                 }
-            }
-            launch {
-                repositoryViewModel.errorStateFlow.collect {
-                    val message = ErrorMessageParser.parseToErrorMessage(resources, it)
-                    Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
-                }
-            }
 
-            launch {
-                repositoryViewModel.dataStateFlow.collect {
-                    recyclerAdapter.submitList(it.repositoryList)
+                launch {
+                    userDetailViewModel.loadingStateFlow.collect {
+                        showLoadingBar(it.isShow)
+                    }
                 }
             }
         }
@@ -101,5 +115,12 @@ class UserDetailActivity : BaseActivity() {
 
     private fun showUserProfileTransition(user: User) {
         binding.ivUser.loadUserProfile(user.avatarUrl) { supportStartPostponedEnterTransition() }
+    }
+
+    private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            userDetailViewModel.setSelectedPageStateFlow(position)
+        }
     }
 }

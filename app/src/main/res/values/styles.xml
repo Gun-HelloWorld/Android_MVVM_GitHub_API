@@ -25,6 +25,7 @@
         <item name="android:textSize">15dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
     </style>
 
     <!-- EditText -->
@@ -85,6 +86,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/selector_tab_menu</item>
     </style>
 
     <!-- TextView User contents count label -->
@@ -92,6 +94,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/selector_tab_menu</item>
     </style>
 
     <!-- View Divider-->
@@ -117,6 +120,7 @@
     <style name="ImageView_Repository_Holder_Icon_Style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
     </style>
 
     <!-- TextView Repository Holder Count -->
@@ -127,6 +131,7 @@
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
     </style>
 
     <!-- TextView Repository Holder Title -->
@@ -137,6 +142,7 @@
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">20dp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
     </style>
 
     <!-- TextView Repository Holder Description -->
@@ -145,5 +151,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">5</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
     </style>
 </resources>

@@ -11,4 +11,10 @@ interface UserService {
 
     @GET("users/{userName}")
     suspend fun fetchUser(@Path("userName") userName: String): User
+
+    @GET("users/{userName}/followers")
+    suspend fun fetchFollowerList(@Path("userName") userName: String): MutableList<User>
+
+    @GET("users/{userName}/following")
+    suspend fun fetchFollowing(@Path("userName") userName: String): MutableList<User>
 }

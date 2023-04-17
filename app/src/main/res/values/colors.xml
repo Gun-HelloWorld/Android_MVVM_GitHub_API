@@ -16,5 +16,6 @@
     <color name="color_common_special_label_mint">#2BA5BA</color>
     <color name="color_common_error_text_red">#FF5A5A</color>
     <color name="color_common_divider_grey">#5D5D5D</color>
+    <color name="color_common_normal_text_white">#ABABAB</color>
     <color name="color_card_view_background_grey">#3B3B3B</color>
 </resources>

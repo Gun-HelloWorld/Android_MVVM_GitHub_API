@@ -5,6 +5,12 @@
     tools:showIn="@layout/activity_user_detail">
 
     <data>
+        <import type="android.graphics.Typeface" />
+
+        <variable
+            name="viewModel"
+            type="com.gun.githubapi.ui.user.detail.UserDetailViewModel" />
+
         <variable
             name="user"
             type="com.gun.githubapi.data.dto.user.User" />
@@ -12,60 +18,83 @@
 
     <merge>
 
-        <TextView
-            android:id="@+id/tv_value_repository_cnt"
-            style="@style/TextView_User_Contents_Count_Value_Style"
+        <LinearLayout
+            android:id="@+id/layout_repository"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            tools:text="101"
-            android:text="@{String.valueOf(user.public_repos)}"
+            android:orientation="vertical"
+            android:onClick="@{(v) -> viewModel.onClickTabMenu(0)}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_value_followers_cnt"
-            app:layout_constraintTop_toBottomOf="@id/tv_user_nickname"/>
+            app:layout_constraintEnd_toStartOf="@id/layout_followers"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_nickname">
 
-        <TextView
-            android:id="@+id/tv_value_followers_cnt"
-            style="@style/TextView_User_Contents_Count_Value_Style"
-            tools:text="102"
-            android:text="@{String.valueOf(user.followers)}"
-            app:layout_constraintStart_toEndOf="@id/tv_value_repository_cnt"
-            app:layout_constraintEnd_toStartOf="@id/tv_value_following_cnt"
-            app:layout_constraintTop_toTopOf="@id/tv_value_repository_cnt"
-            app:layout_constraintBottom_toBottomOf="@id/tv_value_repository_cnt"/>
+            <TextView
+                android:id="@+id/tv_value_repository_cnt"
+                style="@style/TextView_User_Contents_Count_Value_Style"
+                android:layout_width="match_parent"
+                tools:text="101"
+                android:text="@{String.valueOf(user.public_repos)}"/>
 
-        <TextView
-            android:id="@+id/tv_value_following_cnt"
-            style="@style/TextView_User_Contents_Count_Value_Style"
-            tools:text="103"
-            android:text="@{String.valueOf(user.following)}"
-            app:layout_constraintStart_toEndOf="@id/tv_value_followers_cnt"
+            <TextView
+                android:id="@+id/tv_label_repository_cnt"
+                style="@style/TextView_User_Contents_Count_Label_Style"
+                android:layout_width="match_parent"
+                android:text="@string/label_repositories"
+                android:typeface="@{Typeface.defaultFromStyle(viewModel.selectedPageStateFlow == 0 ? Typeface.BOLD : Typeface.NORMAL)}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_followers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:onClick="@{(v) -> viewModel.onClickTabMenu(1)}"
+            app:layout_constraintStart_toEndOf="@id/layout_repository"
+            app:layout_constraintEnd_toStartOf="@id/layout_following"
+            app:layout_constraintTop_toTopOf="@id/layout_repository"
+            app:layout_constraintBottom_toBottomOf="@id/layout_repository">
+
+            <TextView
+                android:id="@+id/tv_value_followers_cnt"
+                style="@style/TextView_User_Contents_Count_Value_Style"
+                android:layout_width="match_parent"
+                tools:text="102"
+                android:text="@{String.valueOf(user.followers)}"/>
+
+            <TextView
+                android:id="@+id/tv_label_followers_cnt"
+                style="@style/TextView_User_Contents_Count_Label_Style"
+                android:layout_width="match_parent"
+                android:text="@string/label_followers"
+                android:typeface="@{Typeface.defaultFromStyle(viewModel.selectedPageStateFlow == 1 ? Typeface.BOLD : Typeface.NORMAL)}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_following"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:onClick="@{(v) -> viewModel.onClickTabMenu(2)}"
+            app:layout_constraintStart_toEndOf="@id/layout_followers"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_value_repository_cnt"
-            app:layout_constraintBottom_toBottomOf="@id/tv_value_repository_cnt"/>
+            app:layout_constraintTop_toTopOf="@id/layout_repository"
+            app:layout_constraintBottom_toBottomOf="@id/layout_repository">
+            <TextView
+                android:id="@+id/tv_value_following_cnt"
+                style="@style/TextView_User_Contents_Count_Value_Style"
+                android:layout_width="match_parent"
+                tools:text="103"
+                android:text="@{String.valueOf(user.following)}"/>
 
-        <TextView
-            android:id="@+id/tv_label_repository_cnt"
-            style="@style/TextView_User_Contents_Count_Label_Style"
-            android:text="@string/label_repositories"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tv_label_followers_cnt"
-            app:layout_constraintTop_toBottomOf="@id/tv_value_repository_cnt" />
+            <TextView
+                android:id="@+id/tv_label_following_cnt"
+                style="@style/TextView_User_Contents_Count_Label_Style"
+                android:layout_width="match_parent"
+                android:text="@string/label_following"
+                android:typeface="@{Typeface.defaultFromStyle(viewModel.selectedPageStateFlow == 2 ? Typeface.BOLD : Typeface.NORMAL)}" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_label_followers_cnt"
-            style="@style/TextView_User_Contents_Count_Label_Style"
-            android:text="@string/label_followers"
-            app:layout_constraintStart_toEndOf="@id/tv_label_repository_cnt"
-            app:layout_constraintEnd_toStartOf="@id/tv_label_following_cnt"
-            app:layout_constraintTop_toTopOf="@id/tv_label_repository_cnt"
-            app:layout_constraintBottom_toBottomOf="@id/tv_label_repository_cnt"/>
-
-        <TextView
-            android:id="@+id/tv_label_following_cnt"
-            style="@style/TextView_User_Contents_Count_Label_Style"
-            android:text="@string/label_following"
-            app:layout_constraintStart_toEndOf="@id/tv_label_followers_cnt"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_label_repository_cnt" />
     </merge>
 
 </layout>

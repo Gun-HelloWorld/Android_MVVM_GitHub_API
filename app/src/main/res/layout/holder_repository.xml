@@ -50,8 +50,7 @@
 
                 <TextView
                     android:id="@+id/tv_license"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/TextView_Repository_Holder_Count_Style"
                     android:textSize="12dp"
                     tools:text="Apache License 2.0"
                     android:text="@{repository.license.name}"

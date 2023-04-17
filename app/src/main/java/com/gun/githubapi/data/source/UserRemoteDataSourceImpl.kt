@@ -7,4 +7,12 @@ class UserRemoteDataSourceImpl(private val userService: UserService) : UserRemot
     override suspend fun fetchUser(userName: String): User {
         return userService.fetchUser(userName)
     }
+
+    override suspend fun fetchFollowerList(userName: String): MutableList<User> {
+        return userService.fetchFollowerList(userName)
+    }
+
+    override suspend fun fetchFollowingList(userName: String): MutableList<User> {
+        return userService.fetchFollowing(userName)
+    }
 }

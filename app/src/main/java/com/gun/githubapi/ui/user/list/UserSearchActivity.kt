@@ -7,6 +7,7 @@ import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
@@ -41,6 +42,7 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
 
     private fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_search)
+        binding.lifecycleOwner = this
         binding.userViewModel = userViewModel
 
         initLoadingBar(binding.loadingBar)
@@ -57,43 +59,44 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
     }
 
     private fun initObserver() {
-        lifecycleScope.launchWhenStarted {
-
-            launch {
-                userViewModel.loadingStateFlow.collect {
-                    showLoadingBar(it.isShow)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    userViewModel.loadingStateFlow.collect {
+                        showLoadingBar(it.isShow)
+                    }
                 }
-            }
 
-            launch {
-                userViewModel.errorStateFlow.collect {
-                    val message = ErrorMessageParser.parseToErrorMessage(resources, it)
-                    Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT).show()
+                launch {
+                    userViewModel.errorStateFlow.collect {
+                        val message = ErrorMessageParser.parseToErrorMessage(resources, it)
+                        Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            launch {
-                userViewModel.dataStateFlow.collectLatest {
-                    when (it) {
-                        is DataState.Nothing -> {}
+                launch {
+                    userViewModel.dataStateFlow.collectLatest {
+                        when (it) {
+                            is DataState.Nothing -> {}
 
-                        is DataState.ShowUserList -> {
-                            recyclerAdapter.submitData(it.userList)
-                        }
+                            is DataState.ShowUserList -> {
+                                recyclerAdapter.submitData(it.userList)
+                            }
 
-                        is DataState.ShowUser -> {
-                            recyclerAdapter.submitData(lifecycle, PagingData.empty())
-                            recyclerAdapter.submitData(PagingData.from(listOf(it.user)))
+                            is DataState.ShowUser -> {
+                                recyclerAdapter.submitData(lifecycle, PagingData.empty())
+                                recyclerAdapter.submitData(PagingData.from(listOf(it.user)))
+                            }
                         }
                     }
                 }
-            }
 
-            launch {
-                userViewModel.eventSharedFlow.collectLatest {
-                    when (it) {
-                        is EventState.MoveDetailActivity -> {
-                            startDetailActivity(it.user)
+                launch {
+                    userViewModel.eventSharedFlow.collectLatest {
+                        when (it) {
+                            is EventState.MoveDetailActivity -> {
+                                startDetailActivity(it.user)
+                            }
                         }
                     }
                 }

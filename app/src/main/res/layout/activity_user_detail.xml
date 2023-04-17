@@ -6,6 +6,11 @@
     tools:context=".ui.user.detail.UserDetailActivity">
 
     <data>
+
+        <variable
+            name="viewModel"
+            type="com.gun.githubapi.ui.user.detail.UserDetailViewModel" />
+
         <variable
             name="user"
             type="com.gun.githubapi.data.dto.user.User" />
@@ -14,7 +19,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp">
+        android:paddingTop="20dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_user"
@@ -41,8 +46,10 @@
 
         <!-- Repository, Followers, Following -->
         <include
+            android:id="@+id/layout_user_detail_count"
             layout="@layout/layer_user_detail_count"
-            bind:user="@{user}"/>
+            bind:user="@{user}"
+            bind:viewModel="@{viewModel}" />
 
         <View
             android:id="@+id/view_divider"
@@ -50,44 +57,28 @@
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_label_repository_cnt"
+            app:layout_constraintTop_toBottomOf="@id/layout_repository"
             tools:ignore="NotSibling" />
 
-        <TextView
-            android:id="@+id/tv_label_repository"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/view_pager"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:paddingVertical="20dp"
-            android:paddingStart="10dp"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/color_common_special_label_mint"
-            android:text="@string/label_repositories"
+            android:paddingHorizontal="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_divider"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            style="@style/RecyclerView_Style"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:paddingBottom="20dp"
-            tools:listitem="@layout/holder_repository"
-            tools:itemCount="6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_label_repository"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <com.gun.githubapi.common.CustomLoadingBar
             android:id="@+id/loading_bar"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="@id/recycler_view"
-            app:layout_constraintEnd_toEndOf="@id/recycler_view"
-            app:layout_constraintTop_toTopOf="@id/recycler_view"
-            app:layout_constraintBottom_toBottomOf="@id/recycler_view" />
+            app:layout_constraintStart_toStartOf="@id/view_pager"
+            app:layout_constraintEnd_toEndOf="@id/view_pager"
+            app:layout_constraintTop_toTopOf="@id/view_pager"
+            app:layout_constraintBottom_toBottomOf="@id/view_pager" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
