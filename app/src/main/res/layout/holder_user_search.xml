@@ -20,62 +20,30 @@
         android:layout_height="wrap_content"
         android:onClick="@{(v) -> listener.onItemClick(v, ivUser, user)}">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_user_info"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_margin="10dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@id/iv_user"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_user"
-                app:layout_constraintTop_toTopOf="@id/iv_user">
-
-                <ImageView
-                    android:id="@+id/iv_user_page"
-                    style="@style/ImageView_User_Profile_Info_Style"
-                    android:src="@drawable/icon_user_page"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/tv_user_nickname" />
-
-                <TextView
-                    android:id="@+id/tv_user_nickname"
-                    style="@style/TextView_User_Profile_Style"
-                    android:layout_width="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="홍길동"
-                    android:text="@{user.login}"/>
-
-                <TextView
-                    android:id="@+id/tv_user_page"
-                    style="@style/TextView_User_Profile_Style"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="5dp"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_user_page"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iv_user_page"
-                    app:layout_constraintTop_toTopOf="@id/iv_user_page"
-                    android:text="@{user.htmlUrl}"
-                    tools:text="www.xxxx.com" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            android:padding="10dp"
+            android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_user"
                 style="@style/ImageView_Circle_Style"
                 app:imageUrl="@{user.avatarUrl}"
                 app:placeholder="@{@drawable/icon_profile_blank}"
-                android:transitionName="@string/transition_user_profile_img"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:transitionName="@string/transition_user_profile_img" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_user_nickname"
+                style="@style/TextView_User_Profile_Style"
+                android:layout_width="0dp"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                tools:text="홍길동"
+                android:text="@{user.login}"/>
+
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 </layout>
