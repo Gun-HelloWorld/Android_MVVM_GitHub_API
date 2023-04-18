@@ -1,37 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- TextView Activity Title -->
-    <style name="TextView_Activity_Title_Style">
+    <!--######################################### Base ##########################################-->
+
+    <style name="Base" />
+
+    <style name="Base.Size" />
+
+    <style name="Base.TextView" />
+
+    <style name="Base.Size.0_0">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">0dp</item>
     </style>
 
-    <!-- TextView Label -->
-    <style name="TextView_Input_Label_Style">
+    <style name="Base.Size.0_Wrap">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/color_common_label_white</item>
-        <item name="android:textSize">15dp</item>
     </style>
 
-    <!-- TextView User Profile -->
-    <style name="TextView_User_Profile_Style">
+    <style name="Base.Size.Wrap_Wrap">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="Base.Size.Match_Wrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Base.TextView.Size.0_Wrap" parent="Base.Size.0_Wrap">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/color_common_normal_text_white</item>
     </style>
 
-    <!-- EditText -->
-    <style name="EditText_Input_Style">
+    <style name="Base.TextView.Size.Match_Wrap" parent="Base.Size.Match_Wrap">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
+    </style>
+
+    <style name="Base.TextView.Size.Wrap_Wrap" parent="Base.Size.Wrap_Wrap">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
+    </style>
+
+    <!--######################################## View## #########################################-->
+
+    <!-- View Divider-->
+    <style name="View_Divider_Style">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/color_common_divider_grey</item>
+    </style>
+
+    <!--######################################### TextView ##########################################-->
+
+    <!-- TextView Activity Title -->
+    <style name="TextView_Activity_Title_Style" parent="Base.TextView.Size.0_Wrap">
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- TextView User Profile -->
+    <style name="TextView_User_Profile_Style" parent="Base.TextView.Size.Wrap_Wrap">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
+    </style>
+
+    <!-- TextView Repository Holder Count -->
+    <style name="TextView_Repository_Holder_Count_Style" parent="Base.TextView.Size.Wrap_Wrap">
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+    </style>
+
+    <!-- TextView Repository Holder Title -->
+    <style name="TextView_Repository_Holder_Title_Style" parent="Base.TextView.Size.0_Wrap">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- TextView Repository Holder Description -->
+    <style name="TextView_Repository_Holder_Description_Style" parent="Base.TextView.Size.0_Wrap">
+        <item name="android:maxLines">5</item>
+    </style>
+
+    <!-- TextView User contents count value -->
+    <style name="TextView_User_Contents_Count_Value_Style" parent="Base.TextView.Size.Match_Wrap">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/selector_tab_menu</item>
+    </style>
+
+    <!-- TextView User contents count label -->
+    <style name="TextView_User_Contents_Count_Label_Style" parent="Base.TextView.Size.Match_Wrap">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/selector_tab_menu</item>
+    </style>
+
+    <!-- TextView Input Error -->
+    <style name="TextView_Input_Error_Style" parent="Base.TextView.Size.0_Wrap">
+        <item name="android:textColor">@color/color_common_error_text_red</item>
+    </style>
+
+    <!--####################################### EditText ########################################-->
+
+    <!-- EditText -->
+    <style name="EditText_Input_Style" parent="Base.Size.0_Wrap">
         <item name="android:inputType">text</item>
         <item name="android:maxLines">1</item>
         <item name="android:imeOptions">actionDone</item>
@@ -40,38 +120,7 @@
         <item name="android:textSize">15dp</item>
     </style>
 
-    <!-- Button Common -->
-    <style name="Button_Common_Style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/color_common_btn_mint</item>
-        <item name="android:textColor">@color/color_common_label_white</item>
-        <item name="android:textSize">15dp</item>
-    </style>
-
-    <!-- TextView Input Error -->
-    <style name="TextView_Input_Error_Style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/color_common_error_text_red</item>
-        <item name="android:textSize">12dp</item>
-    </style>
-
-    <!-- ProgressBar -->
-    <style name="LoadingBar_Style" parent="Widget.AppCompat.ProgressBar">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:visibility">gone</item>
-    </style>
-
-    <!-- RecyclerView -->
-    <style name="RecyclerView_Style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:orientation">vertical</item>
-        <item name="android:clipToPadding">false</item>
-        <item name="android:paddingBottom">20dp</item>
-    </style>
+    <!--####################################### ImageView #######################################-->
 
     <!-- ImageView Circle-->
     <style name="ImageView_Circle_Style">
@@ -81,38 +130,49 @@
         <item name="civ_border_color">@color/transparent</item>
     </style>
 
-    <!-- TextView User contents count value -->
-    <style name="TextView_User_Contents_Count_Value_Style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/selector_tab_menu</item>
+    <!-- ImageView Repository Holder Icon -->
+    <style name="ImageView_Repository_Holder_Icon_Style" parent="Base.Size.Wrap_Wrap">
     </style>
 
-    <!-- TextView User contents count label -->
-    <style name="TextView_User_Contents_Count_Label_Style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/selector_tab_menu</item>
+    <!-- ImageView Back Button Icon -->
+    <style name="ImageView_Back_Button_Style" parent="Base.Size.Wrap_Wrap">
+        <item name="android:padding">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:src">@drawable/selector_back_button</item>
     </style>
 
-    <!-- View Divider-->
-    <style name="View_Divider_Style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/color_common_divider_grey</item>
+    <!--######################################## Button #########################################-->
+
+    <!-- Button Common -->
+    <style name="Button_Common_Style" parent="Base.Size.0_Wrap">
+        <item name="android:background">@color/color_common_btn_mint</item>
+        <item name="android:textColor">@color/color_common_label_white</item>
+        <item name="android:textSize">15dp</item>
     </style>
+
+    <!--###################################### ProgressBar ######################################-->
+
+    <!-- ProgressBar -->
+    <style name="LoadingBar_Style" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!--###################################### RecyclerView #####################################-->
+
+    <!-- RecyclerView -->
+    <style name="RecyclerView_Style" parent="Base.Size.0_0">
+        <item name="android:orientation">vertical</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+
+    <!--####################################### CardView ########################################-->
 
     <!-- CardView Default-->
-    <style name="CardView_Default_Style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+    <style name="CardView_Default_Style" parent="Base.Size.Match_Wrap">
         <item name="android:foreground">?android:selectableItemBackground</item>
         <item name="android:clickable">true</item>
         <item name="cardCornerRadius">5dp</item>
@@ -121,51 +181,4 @@
         <item name="cardBackgroundColor">@color/color_card_view_background_grey</item>
     </style>
 
-    <!-- ImageView Repository Holder Icon -->
-    <style name="ImageView_Repository_Holder_Icon_Style">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/color_common_normal_text_white</item>
-    </style>
-
-    <!-- ImageView Back Button Icon -->
-    <style name="ImageView_Back_Button_Style">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">20dp</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:clickable">true</item>
-        <item name="android:src">@drawable/selector_back_button</item>
-    </style>
-
-    <!-- TextView Repository Holder Count -->
-    <style name="TextView_Repository_Holder_Count_Style">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">5dp</item>
-        <item name="android:layout_marginEnd">5dp</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/color_common_normal_text_white</item>
-    </style>
-
-    <!-- TextView Repository Holder Title -->
-    <style name="TextView_Repository_Holder_Title_Style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/color_common_normal_text_white</item>
-    </style>
-
-    <!-- TextView Repository Holder Description -->
-    <style name="TextView_Repository_Holder_Description_Style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:maxLines">5</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/color_common_normal_text_white</item>
-    </style>
 </resources>

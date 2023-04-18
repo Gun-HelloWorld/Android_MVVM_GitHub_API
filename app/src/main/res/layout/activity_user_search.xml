@@ -44,7 +44,6 @@
             android:layout_marginStart="10dp"
             android:layout_marginVertical="3dp"
             app:cardUseCompatPadding="false"
-            android:foreground="?android:selectableItemBackground"
             app:layout_constraintStart_toEndOf="@id/et_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/et_search"

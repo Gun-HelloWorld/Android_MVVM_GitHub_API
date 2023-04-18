@@ -42,7 +42,6 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:textSize="11dp"
                 tools:text="홍길동"
                 android:text="@{user.login}"/>
 
