@@ -75,6 +75,16 @@ class UserDetailActivity : BaseActivity() {
                 adapter = viewPagerAdapter
             }
         }
+
+        binding.ivUser.setOnClickListener {
+            if (binding.layoutRoot.currentState == R.id.motion_end) {
+                binding.layoutRoot.transitionToStart()
+            }
+        }
+
+        binding.ivBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun initObserver() {

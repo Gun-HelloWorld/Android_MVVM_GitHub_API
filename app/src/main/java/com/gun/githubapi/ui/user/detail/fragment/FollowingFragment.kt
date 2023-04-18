@@ -43,7 +43,6 @@ class FollowingFragment : BaseFragment() {
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             recyclerView.adapter = recyclerAdapter
-            title = getString(R.string.label_following)
         }
 
         initObserver()

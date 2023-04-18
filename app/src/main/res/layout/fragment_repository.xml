@@ -4,33 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.user.detail.fragment.RepositoryFragment">
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        style="@style/RecyclerView_Style"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/tv_label_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="20dp"
-            android:paddingStart="10dp"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/color_common_special_label_mint"
-            android:text="@string/label_repositories"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            style="@style/RecyclerView_Style"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="20dp"
-            android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="6"
-            tools:listitem="@layout/holder_repository"
-            android:layout_below="@id/tv_label_title"/>
-
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="6"
+        tools:listitem="@layout/holder_repository"/>
 
 </layout>

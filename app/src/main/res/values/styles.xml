@@ -70,6 +70,7 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:clipToPadding">false</item>
+        <item name="android:paddingBottom">20dp</item>
     </style>
 
     <!-- ImageView Circle-->
@@ -82,18 +83,22 @@
 
     <!-- TextView User contents count value -->
     <style name="TextView_User_Contents_Count_Value_Style">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/selector_tab_menu</item>
     </style>
 
     <!-- TextView User contents count label -->
     <style name="TextView_User_Contents_Count_Label_Style">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/selector_tab_menu</item>
     </style>
 
@@ -121,6 +126,16 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/color_common_normal_text_white</item>
+    </style>
+
+    <!-- ImageView Back Button Icon -->
+    <style name="ImageView_Back_Button_Style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:src">@drawable/selector_back_button</item>
     </style>
 
     <!-- TextView Repository Holder Count -->
