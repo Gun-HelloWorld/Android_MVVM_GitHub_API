@@ -49,20 +49,24 @@
             app:layout_constraintTop_toBottomOf="@id/iv_user"
             tools:text="사용자 닉네임" />
 
+        <!-- Repository, Followers, Following -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            style="@style/TabLayout_Style"
+            android:layout_marginHorizontal="20dp"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_nickname" />
+
         <View
             android:id="@+id/view_divider"
             style="@style/View_Divider_Style"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_repository"
-            tools:ignore="NotSibling" />
-
-        <!-- Repository, Followers, Following -->
-        <include
-            android:id="@+id/layout_user_detail_count"
-            layout="@layout/layer_user_detail_count"
-            bind:user="@{user}"
-            bind:viewModel="@{viewModel}"/>
+            app:layout_constraintStart_toStartOf="@id/tab_layout"
+            app:layout_constraintEnd_toEndOf="@id/tab_layout"
+            app:layout_constraintBottom_toBottomOf="@id/tab_layout"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
@@ -73,7 +77,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_divider" />
+            app:layout_constraintTop_toBottomOf="@id/tab_layout" />
 
         <com.gun.githubapi.common.CustomLoadingBar
             android:id="@+id/loading_bar"

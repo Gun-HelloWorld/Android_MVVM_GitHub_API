@@ -13,10 +13,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayoutMediator
 import com.gun.githubapi.R
 import com.gun.githubapi.common.BaseActivity
 import com.gun.githubapi.common.Constants.INTENT_KEY_USER_DATA
+import com.gun.githubapi.common.ErrorMessageParser
 import com.gun.githubapi.common.ZoomOutPageTransformer
 import com.gun.githubapi.common.ext.loadUserProfile
 import com.gun.githubapi.data.dto.user.User
@@ -27,7 +29,8 @@ import kotlinx.coroutines.launch
 class UserDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityUserDetailBinding
-    private val viewPagerAdapter = DetailPagerAdapter(this)
+
+    private lateinit var viewPagerAdapter: DetailPagerAdapter
 
     private val userDetailViewModel by viewModels<UserDetailViewModel> { UserDetailViewModel.Factory }
 
@@ -52,15 +55,20 @@ class UserDetailActivity : BaseActivity() {
 
         initIntentData()?.run {
             showUserProfileTransition(this)
-            binding.user = this
             userDetailViewModel.setUserNickName(login)
+            binding.user = this
+            viewPagerAdapter = DetailPagerAdapter(this@UserDetailActivity, getTabTitle(this))
+            binding.viewPager.adapter = viewPagerAdapter
+            binding.viewPager.setPageTransformer(ZoomOutPageTransformer())
+            TabLayoutMediator(binding.tabLayout, binding.viewPager, true, true, viewPagerAdapter).attach()
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding.viewPager.unregisterOnPageChangeCallback(pageChangeCallback)
-    }
+    private fun getTabTitle(user: User) = arrayOf(
+        String.format(getString(R.string.title_tab_repository), user.public_repos),
+        String.format(getString(R.string.title_tab_followers), user.followers),
+        String.format(getString(R.string.title_tab_following), user.following)
+    )
 
     private fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail)
@@ -69,11 +77,6 @@ class UserDetailActivity : BaseActivity() {
             initLoadingBar(loadingBar)
             lifecycleOwner = this@UserDetailActivity
             viewModel = userDetailViewModel
-            viewPager.apply {
-                setPageTransformer(ZoomOutPageTransformer())
-                registerOnPageChangeCallback(pageChangeCallback)
-                adapter = viewPagerAdapter
-            }
         }
 
         binding.ivUser.setOnClickListener {
@@ -91,11 +94,9 @@ class UserDetailActivity : BaseActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    userDetailViewModel.selectedPageStateFlow.collect {
-                        binding.viewPager.setCurrentItem(it, true)
-                        binding.layoutUserDetailCount.layoutRepository.isSelected = it == 0
-                        binding.layoutUserDetailCount.layoutFollowers.isSelected = it == 1
-                        binding.layoutUserDetailCount.layoutFollowing.isSelected = it == 2
+                    userDetailViewModel.errorStateFlow.collect {
+                        val message = ErrorMessageParser.parseToErrorMessage(resources, it)
+                        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
@@ -125,12 +126,5 @@ class UserDetailActivity : BaseActivity() {
 
     private fun showUserProfileTransition(user: User) {
         binding.ivUser.loadUserProfile(user.avatarUrl) { supportStartPostponedEnterTransition() }
-    }
-
-    private val pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            super.onPageSelected(position)
-            userDetailViewModel.setSelectedPageStateFlow(position)
-        }
     }
 }

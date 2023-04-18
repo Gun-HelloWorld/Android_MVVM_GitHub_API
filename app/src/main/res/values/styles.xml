@@ -136,7 +136,8 @@
 
     <!-- ImageView Back Button Icon -->
     <style name="ImageView_Back_Button_Style" parent="Base.Size.Wrap_Wrap">
-        <item name="android:padding">20dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:clickable">true</item>
         <item name="android:src">@drawable/selector_back_button</item>
@@ -180,5 +181,32 @@
         <item name="cardElevation">5dp</item>
         <item name="cardBackgroundColor">@color/color_card_view_background_grey</item>
     </style>
+
+    <!--####################################### TabLayout #######################################-->
+
+    <style name="TabLayout_Style" parent="Widget.Design.TabLayout">
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabIndicatorColor">@color/color_common_btn_mint</item>
+        <item name="tabIndicatorFullWidth">true</item>
+        <item name="tabBackground">@color/transparent</item>
+        <item name="tabIndicatorGravity">bottom</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabRippleColor">@color/transparent</item>
+        <item name="tabSelectedTextColor">@color/color_common_special_label_mint</item>
+        <item name="tabTextAppearance">@style/TabLayout_Text_UnSelected_Style</item>
+    </style>
+
+    <style name="TabLayout_Text_UnSelected_Style" parent="TextAppearance.Design.Tab">
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/color_common_normal_text_white</item>
+        <item name="android:lineSpacingExtra">7dp</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 </resources>

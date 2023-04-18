@@ -28,10 +28,6 @@ class UserDetailViewModel(
 
     private var _nickname: String? = null
 
-    private val _selectedPageStateFlow =
-        MutableStateFlow(0)
-    val selectedPageStateFlow = _selectedPageStateFlow.asStateFlow()
-
     private val _repoDataStateFlow =
         MutableStateFlow(RepositoryDataState.RepositoryListLoadSuccess(mutableListOf()))
     val repoDataStateFlow = _repoDataStateFlow.asStateFlow()
@@ -61,10 +57,6 @@ class UserDetailViewModel(
 
     fun setUserNickName(nickname: String) {
         _nickname = nickname
-    }
-
-    fun setSelectedPageStateFlow(tabPosition: Int) {
-        _selectedPageStateFlow.value = tabPosition
     }
 
     fun fetchRepositoryList() {
@@ -101,9 +93,5 @@ class UserDetailViewModel(
                 _loadingStateFlow.value = LoadingState(false)
             }
         }
-    }
-
-    fun onClickTabMenu(tabPosition: Int) {
-        setSelectedPageStateFlow(tabPosition)
     }
 }
