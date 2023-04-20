@@ -8,13 +8,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailPagerAdapter(
     fragmentActivity: FragmentActivity,
-    private val tabTitleArray: Array<String>
+    private val tabTitleArray: Array<String>,
+    nickName: String
 ) : FragmentStateAdapter(fragmentActivity), TabLayoutMediator.TabConfigurationStrategy  {
 
     private val fragmentList = mutableListOf(
-        RepositoryFragment.newInstance(),
-        FollowersFragment.newInstance(),
-        FollowingFragment.newInstance()
+        RepositoryFragment.newInstance(nickName),
+        FollowersFragment.newInstance(nickName),
+        FollowingFragment.newInstance(nickName)
     )
 
     override fun getItemCount(): Int {

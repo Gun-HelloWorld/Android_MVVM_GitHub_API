@@ -7,10 +7,7 @@ import com.gun.githubapi.common.Constants.TAG
 import com.gun.githubapi.common.state.ErrorState
 import com.gun.githubapi.common.state.LoadingState
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException

@@ -1,4 +1,4 @@
-package com.gun.githubapi.common
+package com.gun.githubapi.ui.common
 
 import android.content.Context
 import android.util.AttributeSet

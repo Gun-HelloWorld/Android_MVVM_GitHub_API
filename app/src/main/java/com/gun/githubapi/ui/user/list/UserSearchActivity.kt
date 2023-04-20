@@ -2,6 +2,7 @@ package com.gun.githubapi.ui.user.list
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.OnClickListener
 import androidx.activity.viewModels
 import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
@@ -10,10 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import com.google.android.material.snackbar.Snackbar
 import com.gun.githubapi.R
 import com.gun.githubapi.common.BaseActivity
-import com.gun.githubapi.common.ErrorMessageParser
 import com.gun.githubapi.common.recyclerview.ItemClickTransitionListener
 import com.gun.githubapi.common.state.LoadingState
 import com.gun.githubapi.data.dto.user.User
@@ -42,19 +41,18 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
 
     private fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_search)
-        binding.lifecycleOwner = this
-        binding.userViewModel = userViewModel
-
-        initLoadingBar(binding.loadingBar)
 
         recyclerAdapter.addLoadStateListener {
             val isLoading = it.source.refresh is LoadState.Loading
             userViewModel.loadingStateChange(isLoading)
         }
 
-        binding.recyclerView.apply {
-            adapter = recyclerAdapter.withLoadStateFooter(LoadingStateAdapter())
-            setHasFixedSize(true)
+        with(binding) {
+            lifecycleOwner = this@UserSearchActivity
+            userViewModel = this@UserSearchActivity.userViewModel
+            customErrorView.setRetryClickListener(onRetryClickListener)
+            recyclerView.adapter = recyclerAdapter.withLoadStateFooter(LoadingStateAdapter())
+            recyclerView.setHasFixedSize(true)
         }
     }
 
@@ -63,14 +61,18 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     userViewModel.loadingStateFlow.collect {
-                        showLoadingBar(it.isShow)
+                        if (it.isShow) {
+                            binding.customErrorView.hide()
+                        }
+
+                        binding.loadingBar.showLoadingBar(it.isShow)
                     }
                 }
 
                 launch {
                     userViewModel.errorStateFlow.collect {
-                        val message = ErrorMessageParser.parseToErrorMessage(resources, it)
-                        Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT).show()
+                        binding.customErrorView.show(it)
+                        recyclerAdapter.submitData(PagingData.empty())
                     }
                 }
 
@@ -84,7 +86,6 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
                             }
 
                             is DataState.ShowUser -> {
-                                recyclerAdapter.submitData(lifecycle, PagingData.empty())
                                 recyclerAdapter.submitData(PagingData.from(listOf(it.user)))
                             }
                         }
@@ -107,6 +108,10 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
     private fun startDetailActivity(user: User) {
         val pairList = sharedElementsMap[user.login]
         UserDetailActivity.startActivity(this, user, pairList)
+    }
+
+    private val onRetryClickListener: OnClickListener = OnClickListener {
+        userViewModel.retryApiRequest()
     }
 
     override fun onItemClick(view: View, transitionView: View, data: User) {

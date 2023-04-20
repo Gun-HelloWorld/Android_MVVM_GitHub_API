@@ -26,6 +26,8 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
     private val _eventSharedFlow = MutableSharedFlow<EventState>()
     val eventSharedFlow = _eventSharedFlow.asSharedFlow()
 
+    private var dispatchRetry: (() -> Unit)? = null
+
     enum class Mode {
         SEARCH,
         MOVE_DETAIL
@@ -48,15 +50,25 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
     }
 
     fun fetchUserList() {
-        // 페이징 조회 시 UserSearchActivity 의 addLoadStateListener 에 의해 변경
+        dispatchRetry = { fetchUserList() }
+
+        loadingStateChange(true)
+
+        _dataStateFlow.value = DataState.Nothing
+
         viewModelScope.launch(exceptionHandler) {
+            // 조회 완료 후 로딩 상태 변경은 페이징 조회 시 UserSearchActivity 의 addLoadStateListener 에 의해 변경
             val userList = userRepository.fetchUserList().flow.cachedIn(viewModelScope)
             _dataStateFlow.value = DataState.ShowUserList(userList.first())
         }
     }
 
     fun fetchUser(userName: String, mode: Mode) {
+        dispatchRetry = { fetchUser(userName, mode) }
+
         loadingStateChange(true)
+
+        _dataStateFlow.value = DataState.Nothing
 
         viewModelScope.launch(exceptionHandler) {
             val user = userRepository.fetchUser(userName)
@@ -95,5 +107,9 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
         }
 
         fetchUser(user.login, Mode.MOVE_DETAIL)
+    }
+
+    fun retryApiRequest() {
+        dispatchRetry?.invoke()
     }
 }
