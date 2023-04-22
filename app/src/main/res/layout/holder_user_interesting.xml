@@ -32,8 +32,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:imageUrl="@{user.avatarUrl}"
-                app:placeholder="@{@drawable/icon_profile_blank}"
-                android:transitionName="@string/transition_user_profile_img" />
+                app:placeholder="@{@drawable/icon_profile_blank}" />
 
             <TextView
                 android:id="@+id/tv_user_nickname"
