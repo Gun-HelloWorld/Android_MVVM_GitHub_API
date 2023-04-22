@@ -10,8 +10,7 @@
 
         <ImageView
             android:id="@+id/iv_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Base.Size.Wrap_Wrap"
             app:layout_constraintVertical_chainStyle="packed"
             android:src="@drawable/icon_error"
             app:layout_constraintStart_toStartOf="parent"
@@ -21,8 +20,7 @@
 
         <TextView
             android:id="@+id/tv_error"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/Base.TextView.Size.0_Wrap"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:textStyle="bold"
@@ -34,8 +32,8 @@
 
         <TextView
             android:id="@+id/tv_error_detail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            style="@style/Base.TextView.Size.0_Wrap"
+            android:maxLines="10"
             android:layout_marginTop="10dp"
             android:gravity="center"
             tools:text="Detail Error Description"
@@ -46,8 +44,7 @@
 
         <Button
             android:id="@+id/btn_retry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Base.Size.Wrap_Wrap"
             android:layout_marginTop="40dp"
             android:textColor="@color/color_common_btn_mint"
             android:background="@drawable/shape_btn_round_14"
