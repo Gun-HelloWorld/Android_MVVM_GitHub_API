@@ -11,6 +11,8 @@ import com.gun.githubapi.common.state.LoadingState
 import com.gun.githubapi.data.dto.user.User
 import com.gun.githubapi.data.repository.UserRepository
 import com.gun.githubapi.data.repository.UserRepositoryImpl
+import com.gun.githubapi.data.dto.result.ApiResult
+import com.gun.githubapi.data.dto.error.ErrorData
 import com.gun.githubapi.data.source.UserRemoteDataSourceImpl
 import com.gun.githubapi.data.source.UserRemotePagingDataSourceImpl
 import com.gun.githubapi.ui.user.list.state.DataState
@@ -49,6 +51,10 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
         _loadingStateFlow.value = LoadingState(isLoading)
     }
 
+    fun dataStateChange(dataState: DataState) {
+        _dataStateFlow.value = dataState
+    }
+
     fun fetchUserList() {
         dispatchRetry = { fetchUserList() }
 
@@ -71,16 +77,19 @@ class UserViewModel(private val userRepository: UserRepository) : BaseViewModel(
         _dataStateFlow.value = DataState.Nothing
 
         viewModelScope.launch(exceptionHandler) {
-            val user = userRepository.fetchUser(userName)
-
-            if (mode == Mode.MOVE_DETAIL) {
-                _eventSharedFlow.emit(EventState.MoveDetailActivity(user))
-                loadingStateChange(false)
-                return@launch
-            } else {
-                _dataStateFlow.value = DataState.ShowUser(user)
-                loadingStateChange(false)
+            when (val response = userRepository.fetchUser(userName)) {
+                is ApiResult.ApiSuccess -> {
+                    loadingStateChange(false)
+                    if (mode == Mode.MOVE_DETAIL) {
+                        _eventSharedFlow.emit(EventState.MoveDetailActivity(response.data))
+                    } else {
+                        _dataStateFlow.emit(DataState.ShowUser(response.data))
+                    }
+                }
+                is ApiResult.ApiError -> _errorSharedFlow.emit(ErrorData(response.code, response.message))
+                is ApiResult.ApiException -> _errorSharedFlow.emit(ErrorData(message = response.e.message))
             }
+            _loadingStateFlow.value = LoadingState(false)
         }
     }
 

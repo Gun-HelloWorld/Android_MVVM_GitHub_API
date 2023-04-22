@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
-import com.gun.githubapi.common.ErrorMessageParser
-import com.gun.githubapi.common.state.ErrorState
+import com.gun.githubapi.R
+import com.gun.githubapi.data.dto.error.ErrorData
 import com.gun.githubapi.databinding.LayoutCustomErrorViewBinding
 
 class CustomErrorView @JvmOverloads constructor(
@@ -26,9 +26,15 @@ class CustomErrorView @JvmOverloads constructor(
         binding.btnRetry.setOnClickListener(clickListener)
     }
 
-    fun show(errorState: ErrorState) {
-        val errorMessage = ErrorMessageParser.parseToErrorMessage(resources, errorState)
-        binding.tvError.text = errorMessage
+    fun show(errorData: ErrorData) {
+        val errorText = if (errorData.code != null) {
+            errorData.code.toString() + " : " + errorData.message
+        } else {
+            errorData.message
+        }
+
+        binding.tvError.text = binding.root.context.getString(R.string.msg_error_exception)
+        binding.tvErrorDetail.text = errorText
         binding.root.visibility = View.VISIBLE
     }
 

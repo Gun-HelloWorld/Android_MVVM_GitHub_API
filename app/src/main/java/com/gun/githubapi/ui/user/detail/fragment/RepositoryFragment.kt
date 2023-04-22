@@ -82,14 +82,14 @@ class RepositoryFragment : BaseFragment() {
                 }
 
                 launch {
-                    userDetailViewModel.errorStateFlow.collect {
+                    userDetailViewModel.errorSharedFlow.collect {
                         binding.customErrorView.show(it)
                     }
                 }
 
                 launch {
                     userDetailViewModel.repoDataStateFlow.collect {
-                        recyclerAdapter.submitList(it.repositoryList)
+                        recyclerAdapter.submitList(it)
                     }
                 }
             }

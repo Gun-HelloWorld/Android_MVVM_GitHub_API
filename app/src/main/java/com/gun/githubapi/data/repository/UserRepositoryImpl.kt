@@ -20,15 +20,9 @@ class UserRepositoryImpl(
         )
     }
 
-    override suspend fun fetchUser(userName: String): User {
-        return userRemoteDataSource.fetchUser(userName)
-    }
+    override suspend fun fetchUser(userName: String) = userRemoteDataSource.fetchUser(userName)
 
-    override suspend fun fetchFollowerList(userName: String): MutableList<User> {
-        return userRemoteDataSource.fetchFollowerList(userName)
-    }
+    override suspend fun fetchFollowerList(userName: String) = userRemoteDataSource.fetchFollowerList(userName)
 
-    override suspend fun fetchFollowingList(userName: String): MutableList<User> {
-        return userRemoteDataSource.fetchFollowingList(userName)
-    }
+    override suspend fun fetchFollowingList(userName: String) = userRemoteDataSource.fetchFollowingList(userName)
 }

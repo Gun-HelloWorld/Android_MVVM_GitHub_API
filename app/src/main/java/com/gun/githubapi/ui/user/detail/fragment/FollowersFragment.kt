@@ -80,14 +80,14 @@ class FollowersFragment : BaseFragment() {
                 }
 
                 launch {
-                    userDetailViewModel.errorStateFlow.collect {
+                    userDetailViewModel.errorSharedFlow.collect {
                         binding.customErrorView.show(it)
                     }
                 }
 
                 launch {
                     userDetailViewModel.followerDataState.collect {
-                        recyclerAdapter.submitList(it.followerList)
+                        recyclerAdapter.submitList(it)
                     }
                 }
             }

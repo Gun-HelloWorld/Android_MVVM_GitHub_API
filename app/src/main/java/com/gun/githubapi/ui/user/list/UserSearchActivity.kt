@@ -13,6 +13,8 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.gun.githubapi.R
 import com.gun.githubapi.common.BaseActivity
+import com.gun.githubapi.common.ext.getErrorData
+import com.gun.githubapi.common.ext.getErrorState
 import com.gun.githubapi.common.recyclerview.ItemClickTransitionListener
 import com.gun.githubapi.common.state.LoadingState
 import com.gun.githubapi.data.dto.user.User
@@ -43,6 +45,11 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_search)
 
         recyclerAdapter.addLoadStateListener {
+            it.getErrorState()?.let { error ->
+                userViewModel.dataStateChange(DataState.Clear)
+                binding.customErrorView.show(error.getErrorData())
+            }
+
             val isLoading = it.source.refresh is LoadState.Loading
             userViewModel.loadingStateChange(isLoading)
         }
@@ -70,7 +77,7 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
                 }
 
                 launch {
-                    userViewModel.errorStateFlow.collect {
+                    userViewModel.errorSharedFlow.collect {
                         binding.customErrorView.show(it)
                         recyclerAdapter.submitData(PagingData.empty())
                     }
@@ -80,6 +87,10 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
                     userViewModel.dataStateFlow.collectLatest {
                         when (it) {
                             is DataState.Nothing -> {}
+
+                            is DataState.Clear -> {
+                                recyclerAdapter.submitData(PagingData.empty())
+                            }
 
                             is DataState.ShowUserList -> {
                                 recyclerAdapter.submitData(it.userList)
