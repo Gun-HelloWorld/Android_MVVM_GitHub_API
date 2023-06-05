@@ -57,6 +57,9 @@ dependencies {
     testImplementation 'io.mockk:mockk:1.13.4'
     androidTestImplementation 'io.mockk:mockk-android:1.13.4'
 
+    // Turbine
+    testImplementation 'app.cash.turbine:turbine:0.13.0'
+
     // unitTest 중 라이브데이터에 값을 세팅할 시 내부적으로 MainThread 가 아닐경우 Exception을 발생시키므로
     // InstantTaskExecutorRule(안드로이드 구성요소 관련 작업들을 모두 동일한 스레드에서 실행)을 사용하기 위해 선언
     // ErrorMsg : Method getMainLooper in android.os.Looper not mocked.
@@ -84,5 +87,6 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.15.1'
 
     // Paging
-    implementation("androidx.paging:paging-runtime:3.1.1")
+    implementation "androidx.paging:paging-runtime:3.1.1"
+    testImplementation "androidx.paging:paging-common:3.1.1"
 }
