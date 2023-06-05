@@ -1,6 +1,5 @@
 package com.gun.githubapi.data.dto.user
 
-import android.text.TextUtils
 import com.google.gson.annotations.SerializedName
 
 
@@ -32,17 +31,17 @@ data class User(
     @SerializedName("type") val type: String = "",
     @SerializedName("site_admin") val siteAdmin: String = "",
     // .../users/nickname API Response
-    @SerializedName("name") val name: String = "",
-    @SerializedName("blog") val blog: String = "",
-    @SerializedName("location") val location: String = "",
-    @SerializedName("public_repos") val public_repos: Int = 0,
-    @SerializedName("public_gists") val public_gists: Int = 0,
-    @SerializedName("followers") val followers: Int = 0,
-    @SerializedName("following") val following: Int = 0,
-    @SerializedName("created_at") val created_at: String = "",
-    @SerializedName("updated_at") val updated_at: String = ""
+    @SerializedName("name") val name: String? = null,
+    @SerializedName("blog") val blog: String? = null,
+    @SerializedName("location") val location: String? = null,
+    @SerializedName("public_repos") val public_repos: Int? = null,
+    @SerializedName("public_gists") val public_gists: Int? = null,
+    @SerializedName("followers") val followers: Int? = null,
+    @SerializedName("following") val following: Int? = null,
+    @SerializedName("created_at") val created_at: String? = null,
+    @SerializedName("updated_at") val updated_at: String? = null
 ) : java.io.Serializable {
     fun existUserDetail(): Boolean {
-        return !TextUtils.isEmpty(name)
+        return !name.isNullOrEmpty()
     }
 }

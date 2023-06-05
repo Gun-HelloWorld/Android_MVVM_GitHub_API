@@ -60,9 +60,9 @@ class UserDetailActivity : BaseActivity() {
     }
 
     private fun getTabTitle(user: User) = arrayOf(
-        String.format(getString(R.string.title_tab_repository), user.public_repos),
-        String.format(getString(R.string.title_tab_followers), user.followers),
-        String.format(getString(R.string.title_tab_following), user.following)
+        String.format(getString(R.string.title_tab_repository), user.public_repos ?: 0),
+        String.format(getString(R.string.title_tab_followers), user.followers ?: 0),
+        String.format(getString(R.string.title_tab_following), user.following ?: 0)
     )
 
     private fun initLayout() {
