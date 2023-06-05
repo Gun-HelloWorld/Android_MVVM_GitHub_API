@@ -9,12 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.gun.githubapi.R
 import com.gun.githubapi.common.BaseActivity
-import com.gun.githubapi.common.ext.getErrorData
-import com.gun.githubapi.common.ext.getErrorState
 import com.gun.githubapi.common.recyclerview.ItemClickTransitionListener
 import com.gun.githubapi.common.state.LoadingState
 import com.gun.githubapi.data.dto.user.User
@@ -44,15 +41,7 @@ class UserSearchActivity : BaseActivity(), ItemClickTransitionListener<User> {
     private fun initLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_search)
 
-        recyclerAdapter.addLoadStateListener {
-            it.getErrorState()?.let { error ->
-                userViewModel.dataStateChange(DataState.Clear)
-                binding.customErrorView.show(error.getErrorData())
-            }
-
-            val isLoading = it.source.refresh is LoadState.Loading
-            userViewModel.loadingStateChange(isLoading)
-        }
+        recyclerAdapter.addLoadStateListener(userViewModel.loadStateListener)
 
         with(binding) {
             lifecycleOwner = this@UserSearchActivity

@@ -17,11 +17,19 @@ import java.io.IOException
 
 abstract class BaseViewModel : ViewModel() {
 
-    protected val _errorSharedFlow = MutableSharedFlow<ErrorData>()
+    private val _errorSharedFlow = MutableSharedFlow<ErrorData>()
     val errorSharedFlow = _errorSharedFlow.asSharedFlow()
 
-    protected val _loadingStateFlow = MutableStateFlow(LoadingState(false))
+    private val _loadingStateFlow = MutableStateFlow(LoadingState(false))
     val loadingStateFlow = _loadingStateFlow.asStateFlow()
+
+    fun loadingStateFlowChange(isLoading: Boolean) {
+        _loadingStateFlow.value = LoadingState(isLoading)
+    }
+
+    suspend fun errorSharedFlowChange(errorData: ErrorData) {
+        _errorSharedFlow.emit(errorData)
+    }
 
     protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
