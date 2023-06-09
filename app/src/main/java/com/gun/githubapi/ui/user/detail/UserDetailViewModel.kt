@@ -6,15 +6,14 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.gun.githubapi.api.retrofit.RetrofitProvider
 import com.gun.githubapi.common.BaseViewModel
-import com.gun.githubapi.common.state.LoadingState
+import com.gun.githubapi.data.dto.error.ErrorData
 import com.gun.githubapi.data.dto.repository.Repository
+import com.gun.githubapi.data.dto.result.ApiResult
 import com.gun.githubapi.data.dto.user.User
 import com.gun.githubapi.data.repository.RepoRepository
 import com.gun.githubapi.data.repository.RepoRepositoryImpl
 import com.gun.githubapi.data.repository.UserRepository
 import com.gun.githubapi.data.repository.UserRepositoryImpl
-import com.gun.githubapi.data.dto.result.ApiResult
-import com.gun.githubapi.data.dto.error.ErrorData
 import com.gun.githubapi.data.source.RepositoryRemoteDataSourceImpl
 import com.gun.githubapi.data.source.UserRemoteDataSourceImpl
 import com.gun.githubapi.data.source.UserRemotePagingDataSourceImpl
@@ -58,46 +57,46 @@ class UserDetailViewModel(
     }
 
     fun fetchRepositoryList() {
-        _loadingStateFlow.value = LoadingState(true)
+        loadingStateFlowChange(true)
 
         viewModelScope.launch {
             _nickname?.let {
                 when (val response = repoRepository.fetchRepositoryList(it)) {
                     is ApiResult.ApiSuccess -> _repoDataStateFlow.emit(response.data)
-                    is ApiResult.ApiError -> _errorSharedFlow.emit(ErrorData(response.code, response.message))
-                    is ApiResult.ApiException -> _errorSharedFlow.emit(ErrorData(message = response.e.message))
+                    is ApiResult.ApiError -> errorSharedFlowChange(ErrorData(response.code, response.message))
+                    is ApiResult.ApiException -> errorSharedFlowChange(ErrorData(message = response.e.message))
                 }
-                _loadingStateFlow.value = LoadingState(false)
+                loadingStateFlowChange(false)
             }
         }
     }
 
     fun fetchFollowerList() {
-        _loadingStateFlow.value = LoadingState(true)
+        loadingStateFlowChange(true)
 
         viewModelScope.launch(exceptionHandler) {
             _nickname?.let {
                 when (val response = userRepository.fetchFollowerList(it)) {
                     is ApiResult.ApiSuccess -> _followerDataStateFlow.emit(response.data)
-                    is ApiResult.ApiError -> _errorSharedFlow.emit(ErrorData(response.code, response.message))
-                    is ApiResult.ApiException -> _errorSharedFlow.emit(ErrorData(message = response.e.message))
+                    is ApiResult.ApiError -> errorSharedFlowChange(ErrorData(response.code, response.message))
+                    is ApiResult.ApiException -> errorSharedFlowChange(ErrorData(message = response.e.message))
                 }
-                _loadingStateFlow.value = LoadingState(false)
+                loadingStateFlowChange(false)
             }
         }
     }
 
     fun fetchFollowingList() {
-        _loadingStateFlow.value = LoadingState(true)
+        loadingStateFlowChange(true)
 
         viewModelScope.launch(exceptionHandler) {
             _nickname?.let {
                 when (val response = userRepository.fetchFollowerList(it)) {
                     is ApiResult.ApiSuccess -> _followingDataStateFlow.emit(response.data)
-                    is ApiResult.ApiError -> _errorSharedFlow.emit(ErrorData(response.code, response.message))
-                    is ApiResult.ApiException -> _errorSharedFlow.emit(ErrorData(message = response.e.message))
+                    is ApiResult.ApiError -> errorSharedFlowChange(ErrorData(response.code, response.message))
+                    is ApiResult.ApiException -> errorSharedFlowChange(ErrorData(message = response.e.message))
                 }
-                _loadingStateFlow.value = LoadingState(false)
+                loadingStateFlowChange(false)
             }
         }
     }
